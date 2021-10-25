@@ -52,11 +52,19 @@ class BlockMatrix:
 
         print("Created BlockMatrix")
 
+    def removeDupes(self):
+        for row in self.rhsMatrix.matrix:
+            if(self.rhsMatrix.containsDuplicate(row)):
+                self.rhsMatrix.removeFirstDuplicate(row)
     def PrintRow(self,row_id):
         for row_byte in self.matrix[row_id]:
             print(row_byte,end='')
 
-
+ def TryPrintRhs(self,rhs_id):
+        if(rhs_id < len(self.rhsMatrix.matrix)):
+            self.rhsMatrix.PrintRow(rhs_id)
+            return True
+        return False
 
 
 class RHS:
@@ -69,11 +77,18 @@ class RHS:
         for row_byte in self.matrix[row_id]:
             print(row_byte,end='')
 
+def Fill2DMatrixRandom(mat):
+    for row in range(len(mat)):
+        for col in range(len(mat[row])):
+            mat[row][col] = GetRandomByte()
+    return mat
 
 def Initialise2DMatrix(dimX,dimY):
     m =[[0] * dimX for i in range(dimY)]
     return m
 
+def GetRandomByte():
+    return random.randint(0,1)
 
 def bitfield(n):
     return [int(digit) for digit in bin(n)[2:]]
