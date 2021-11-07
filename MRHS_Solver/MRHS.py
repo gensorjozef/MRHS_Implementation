@@ -35,6 +35,19 @@ class MRHS:
             print()
             rhs_id += 1
 
+    def find_solution(self):
+        solutions = []
+        num = 2 ** self.vector_size
+        print("Testing {} vectors...".format(num))
+        for i in range(num):
+            if self.solve_with_vector(i):
+                vec = bitfield(i)
+                for j in range(self.vector_size - len(vec)):
+                    vec.insert(0, 0)
+                yield vec
+        yield None
+        #return solutions
+
     def find_all_solutions(self):
         solutions = []
         num = 2 ** self.vector_size
