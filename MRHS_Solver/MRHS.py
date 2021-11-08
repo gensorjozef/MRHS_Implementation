@@ -46,7 +46,7 @@ class MRHS:
                     vec.insert(0, 0)
                 yield vec
         yield None
-        #return solutions
+        # return solutions
 
     def find_all_solutions(self):
         solutions = []
@@ -173,60 +173,61 @@ def get_random_byte():
 def bitfield(n):
     return [int(digit) for digit in bin(n)[2:]]
 
-class LoadFile:
 
+class LoadFile:
     def __init__(self, file_name):
         self.file_name = file_name
-
-    def read_from_file(self):
-        print(self.file_name)
-
-        fileObj = open(self.file_name, "r")  # opens the file in read mode
-        words = fileObj.read().splitlines()  # puts the file into an array
+        self.position = 0
+        fileObj = open(self.file_name, "r")
+        self.words = fileObj.read().splitlines()
         fileObj.close()
-        rowsNumber = int(words[0])
-        blocksNumber = int(words[1])
+        self.rowsNumber = int(self.words[0])
+        self.blocksNumber = int(self.words[1])
+        self.blocksAnswersLen = []
+        self.matrix = self.get_matrix()
+        self.rhs = self.get_rhs()
+
+    def get_matrix(self):
         blocksLen = []
-        blocksAnswersLen = []
-        for i in range(blocksNumber):
-            blockRaw = words[i+2]
+        for i in range(self.blocksNumber):
+            blockRaw = self.words[i + 2]
             blockInfo = blockRaw.split(' ')
-            #print(blockInfo)
             blockLen = blockInfo[0]
             blockAnswers = blockInfo[1]
             blocksLen.append(blockLen)
-            blocksAnswersLen.append(blockAnswers)
+            self.blocksAnswersLen.append(blockAnswers)
         matrix = []
-        for i in range(rowsNumber):
-            rowRaw = words[2+blocksNumber+i]
-            rowRaw = rowRaw[1:len(rowRaw)-1] # odstrani []
+        for i in range(self.rowsNumber):
+            rowRaw = self.words[2 + self.blocksNumber + i]
+            rowRaw = rowRaw[1:len(rowRaw) - 1]  # odstrani []
             rowBlocks = rowRaw.split('  ')
             rows = []
             for rowBlock in rowBlocks:
                 cols = []
                 for col in rowBlock:
-                    if(col != ' '):
+                    if col != ' ':
                         cols.append(int(col))
                 rows.append(cols)
             matrix.append(rows)
-        sum = 2+blocksNumber+rowsNumber
+        print(matrix)
+        return matrix
+
+    def get_rhs(self):
+        sum = 2 + self.blocksNumber + self.rowsNumber
         rhs = []
-        for i in range(blocksNumber):
-            number = int(blocksAnswersLen[i])
+        for i in range(self.blocksNumber):
+            number = int(self.blocksAnswersLen[i])
             rows = []
             for j in range(number):
-                rowRaw = words[sum+j]
-                row = rowRaw[1:len(rowRaw)-1]
+                rowRaw = self.words[sum + j]
+                row = rowRaw[1:len(rowRaw) - 1]
                 cols = []
                 for col in row:
-                    if (col != ' '):
+                    if col != ' ':
                         cols.append(int(col))
                 rows.append(cols)
 
             rhs.append(rows)
-            sum+=number+1
+            sum += number + 1
         print(rhs)
-
-
-        print(matrix)
-
+        return rhs
