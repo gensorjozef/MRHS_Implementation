@@ -7,12 +7,12 @@ class MRHS:
         self.block_array = []
         self.vector_size = vector_size
 
-    def generate_random_block_array(self, block_count, block_size, rhs_fill, seed=1891499):
+    def generate_random_block_array(self,blocks, rhs_fill, seed=1891499): #blocks = [4,1,2,3]
         random.seed(seed)
-        rhs_count = int((block_size ** 2) * rhs_fill)
-        for n in range(block_count):
-            rhs = RHS(block_size, rhs_count, ran=True)
-            self.block_array.append(BlockMatrix(block_size, self.vector_size, rhs, ran=True))
+        for block in blocks:
+            rhs_count = int((block ** 2) * rhs_fill)
+            rhs = RHS(block, rhs_count, ran=True)
+            self.block_array.append(BlockMatrix(block, self.vector_size, rhs, ran=True))
 
     def print_mrhs(self):
         for row in range(self.vector_size):
