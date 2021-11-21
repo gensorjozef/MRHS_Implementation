@@ -4,10 +4,11 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 from MRHS_Solver import MRHS as ms
+from MRHS_Solver import LoadFile as lf
 
 if __name__ == '__main__':
 
-    mat = ms.LoadFile("input.txt").get_final_matrix()
+    mat = lf.LoadFile("input.txt").get_final_matrix()
     mrhs = ms.MRHS(mat)
     mrhs.print_mrhs()
 
