@@ -3,9 +3,31 @@ import random
 
 class MRHS:
 
-    def __init__(self, vector_size):
-        self.block_array = []
-        self.vector_size = vector_size
+    #def __init__(self, vector_size):
+      #  self.block_array = []
+      #  self.vector_size = vector_size
+    def __init__(self, vectors):
+        self.block_array =[]
+        for vector in vectors:
+            bm = BlockMatrix()
+            bm.initWithMatrix(vector)
+            self.block_array.append(bm)
+        self.vector_size = len(vectors[0][0])
+
+    def initWithMatrix(self, vectors):
+        for vector in vectors:
+            bm = BlockMatrix(0,0,[])
+            bm.initWithMatrix(vector)
+            self.block_array = bm
+        self.vector_size = len(vectors[0][0])
+
+
+    def generate_random_block_array(self, block_count, block_size, rhs_fill, seed=1891499):
+        random.seed(seed)
+        rhs_count = int((block_size ** 2) * rhs_fill)
+        for n in range(block_count):
+            rhs = RHS(block_size, rhs_count, ran=True)
+            self.block_array.append(BlockMatrix(block_size, self.vector_size, rhs, ran=True))
 
     def generate_random_block_array(self,blocks, rhs_fill, seed=1891499): #blocks = [4,1,2,3]
         random.seed(seed)
@@ -36,7 +58,6 @@ class MRHS:
             rhs_id += 1
 
     def find_solution(self):
-        solutions = []
         num = 2 ** self.vector_size
         print("Testing {} vectors...".format(num))
         for i in range(num):
@@ -46,7 +67,9 @@ class MRHS:
                     vec.insert(0, 0)
                 yield vec
         yield None
-        # return solutions
+
+    #1
+
 
     def find_all_solutions(self):
         solutions = []
@@ -84,13 +107,23 @@ class MRHS:
 
 class BlockMatrix:
 
-    def __init__(self, dim_x, dim_y, rhs, ran=False):
-        self.matrix = initialise_2d_matrix(dim_x, dim_y)
-        self.rhsMatrix = rhs
-        if ran:
-            self.matrix = fill_2d_matrix_random(self.matrix)
-            self.remove_block_matrix_dupes()
-        print("Created BlockMatrix")
+   # def __init__(self, dim_x, dim_y, rhs, ran=False):
+     #   self.matrix = initialise_2d_matrix(dim_x, dim_y)
+      #  self.rhsMatrix = rhs
+      #  if ran:
+      #      self.matrix = fill_2d_matrix_random(self.matrix)
+      #      self.remove_block_matrix_dupes()
+      #  print("Created BlockMatrix")
+
+    def initWithMatrix(self,matrix):
+        self.matrix = matrix[0]
+        self.rhsMatrix = RHS()
+        self.rhsMatrix.initWithVectors(matrix[1])
+
+    def __int__(self, mat):
+        self.matrix = mat[0]
+        self.rhsMatrix = RHS()
+        self.rhsMatrix.initWithVectors(mat[1])
 
     def remove_block_matrix_dupes(self):
         for row in self.rhsMatrix.matrix:
@@ -109,11 +142,17 @@ class BlockMatrix:
 
 
 class RHS:
-    def __init__(self, vector_len, vector_count, ran=False):
-        self.matrix = initialise_2d_matrix(vector_len, vector_count)
-        if ran:
-            self.matrix = fill_2d_matrix_random(self.matrix)
-        print("Created RHS")
+    #def __init__(self, vector_len, vector_count, ran=False):
+      #  self.matrix = initialise_2d_matrix(vector_len, vector_count)
+      #  if ran:
+      #      self.matrix = fill_2d_matrix_random(self.matrix)
+      #  print("Created RHS")
+
+    def __int__(self,vectors):
+        self.matrix = vectors
+
+    def initWithVectors(self,vectors):
+        self.matrix = vectors
 
     def contains_duplicate(self, vec):
         count = 0
@@ -173,7 +212,6 @@ def get_random_byte():
 def bitfield(n):
     return [int(digit) for digit in bin(n)[2:]]
 
-
 class LoadFile:
     def __init__(self, file_name):
         self.file_name = file_name
@@ -209,7 +247,6 @@ class LoadFile:
                         cols.append(int(col))
                 rows.append(cols)
             matrix.append(rows)
-        print(matrix)
         return matrix
 
     def get_rhs(self):
@@ -229,5 +266,18 @@ class LoadFile:
 
             rhs.append(rows)
             sum += number + 1
-        print(rhs)
         return rhs
+
+    def get_final_matrix(self):
+        final_matrix, block, block_main, block_rhs = [], [], [], []
+        for i in range(self.blocksNumber):
+            for row_main in self.matrix:
+                block_main.append(row_main[i])
+            for row_rhs in self.rhs[i]:
+                block_rhs.append(row_rhs)
+            block.append(block_main)
+            block.append(block_rhs)
+            final_matrix.append(block)
+            block, block_main, block_rhs = [], [], []
+        return final_matrix
+

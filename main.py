@@ -6,11 +6,14 @@
 from MRHS_Solver import MRHS as ms
 
 if __name__ == '__main__':
-    mrhs = ms.MRHS(8)
-    mrhs.GenerateRandomBlockArray(5,3,0.9,511555)
-    mrhs.PrintMRHS()
-    solutions = mrhs.FindAllSolutions()
-    print(solutions)
-    #print(mrhs.SolveWithVector(solution))
 
+    mat = ms.LoadFile("input.txt").get_final_matrix()
+    mrhs = ms.MRHS(mat)
+    mrhs.print_mrhs()
+
+    # print(generator.__next__())
+    # print(mrhs.find_all_solutions())
+    for i in mrhs.find_solution():
+        print(i)
+    # print(mrhs.SolveWithVector(solution))
 
