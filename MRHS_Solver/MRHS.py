@@ -3,9 +3,24 @@ import random
 
 class MRHS:
 
-    def __init__(self, vector_size):
-        self.block_array = []
-        self.vector_size = vector_size
+    #def __init__(self, vector_size):
+      #  self.block_array = []
+      #  self.vector_size = vector_size
+    def __init__(self, vectors):
+        self.block_array =[]
+        for vector in vectors:
+            bm = BlockMatrix()
+            bm.initWithMatrix(vector)
+            self.block_array.append(bm)
+        self.vector_size = len(vectors[0][0])
+
+    def initWithMatrix(self, vectors):
+        for vector in vectors:
+            bm = BlockMatrix(0,0,[])
+            bm.initWithMatrix(vector)
+            self.block_array = bm
+        self.vector_size = len(vectors[0][0])
+
 
     def generate_random_block_array(self, block_count, block_size, rhs_fill, seed=1891499):
         random.seed(seed)
@@ -13,6 +28,13 @@ class MRHS:
         for n in range(block_count):
             rhs = RHS(block_size, rhs_count, ran=True)
             self.block_array.append(BlockMatrix(block_size, self.vector_size, rhs, ran=True))
+
+    def generate_random_block_array(self,blocks, rhs_fill, seed=1891499): #blocks = [4,1,2,3]
+        random.seed(seed)
+        for block in blocks:
+            rhs_count = int((block ** 2) * rhs_fill)
+            rhs = RHS(block, rhs_count, ran=True)
+            self.block_array.append(BlockMatrix(block, self.vector_size, rhs, ran=True))
 
     def print_mrhs(self):
         for row in range(self.vector_size):
@@ -36,7 +58,6 @@ class MRHS:
             rhs_id += 1
 
     def find_solution(self):
-        solutions = []
         num = 2 ** self.vector_size
         print("Testing {} vectors...".format(num))
         for i in range(num):
@@ -46,7 +67,9 @@ class MRHS:
                     vec.insert(0, 0)
                 yield vec
         yield None
-        #return solutions
+
+    #1
+
 
     def find_all_solutions(self):
         solutions = []
@@ -84,13 +107,23 @@ class MRHS:
 
 class BlockMatrix:
 
-    def __init__(self, dim_x, dim_y, rhs, ran=False):
-        self.matrix = initialise_2d_matrix(dim_x, dim_y)
-        self.rhsMatrix = rhs
-        if ran:
-            self.matrix = fill_2d_matrix_random(self.matrix)
-            self.remove_block_matrix_dupes()
-        print("Created BlockMatrix")
+   # def __init__(self, dim_x, dim_y, rhs, ran=False):
+     #   self.matrix = initialise_2d_matrix(dim_x, dim_y)
+      #  self.rhsMatrix = rhs
+      #  if ran:
+      #      self.matrix = fill_2d_matrix_random(self.matrix)
+      #      self.remove_block_matrix_dupes()
+      #  print("Created BlockMatrix")
+
+    def initWithMatrix(self,matrix):
+        self.matrix = matrix[0]
+        self.rhsMatrix = RHS()
+        self.rhsMatrix.initWithVectors(matrix[1])
+
+    def __int__(self, mat):
+        self.matrix = mat[0]
+        self.rhsMatrix = RHS()
+        self.rhsMatrix.initWithVectors(mat[1])
 
     def remove_block_matrix_dupes(self):
         for row in self.rhsMatrix.matrix:
@@ -109,11 +142,17 @@ class BlockMatrix:
 
 
 class RHS:
-    def __init__(self, vector_len, vector_count, ran=False):
-        self.matrix = initialise_2d_matrix(vector_len, vector_count)
-        if ran:
-            self.matrix = fill_2d_matrix_random(self.matrix)
-        print("Created RHS")
+    #def __init__(self, vector_len, vector_count, ran=False):
+      #  self.matrix = initialise_2d_matrix(vector_len, vector_count)
+      #  if ran:
+      #      self.matrix = fill_2d_matrix_random(self.matrix)
+      #  print("Created RHS")
+
+    def __int__(self,vectors):
+        self.matrix = vectors
+
+    def initWithVectors(self,vectors):
+        self.matrix = vectors
 
     def contains_duplicate(self, vec):
         count = 0
@@ -172,3 +211,38 @@ def get_random_byte():
 
 def bitfield(n):
     return [int(digit) for digit in bin(n)[2:]]
+
+class LoadFile:
+    def __init__(self, file_name):
+        self.file_name = file_name
+
+    def read_from_file(self):
+        print(self.file_name)
+
+        fileObj = open(self.file_name, "r")  # opens the file in read mode
+        words = fileObj.read().splitlines()  # puts the file into an array
+        fileObj.close()
+        rowsNumber = int(words[0])
+        blocksNumber = int(words[1])
+        blocksLen = []
+        blocksAnswersLen = []
+        for i in range(blocksNumber):
+            blockRaw = words[i+1]
+            blockInfo = blockRaw.split(' ')
+            blockLen = blockInfo[0]
+            blockAnswers = blockInfo[1]
+            blocksLen.append(blockLen)
+            blocksAnswersLen.append(blockAnswers)
+        matrix = [[] for j in range(blocksNumber)]
+        for i in range(rowsNumber):
+            rowRaw = words[1+blocksNumber+i]
+            rowRaw = rowRaw[1:len(rowRaw)-1] # odstrani []
+            rowBlocks = rowRaw.split('  ')
+
+            for rowBlock in rowBlocks:
+                cols = []
+                for col in rowBlock:
+                    cols.append(col)
+                matrix.append(cols)
+        print(matrix)
+

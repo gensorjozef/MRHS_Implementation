@@ -4,13 +4,38 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 from MRHS_Solver import MRHS as ms
+from MRHS_Solver import LoadFile as lf
 
 if __name__ == '__main__':
-    mrhs = ms.MRHS(8)
-    mrhs.GenerateRandomBlockArray(5,3,0.9,511555)
-    mrhs.PrintMRHS()
-    solutions = mrhs.FindAllSolutions()
-    print(solutions)
+
+
+    mat = [
+        [
+            [
+              [1, 0, 0],[0, 1, 0],[0, 0, 0],[0, 0, 0],[0, 0, 1] #Hlavna matica
+            ]
+            ,
+            [
+              [1, 1, 1],[1, 0, 1] #RHS
+            ]
+        ], #BLOCK
+        [
+            [
+                [0], [0], [ 1], [0], [0]
+            ]
+            ,
+            [
+                [0]
+            ]
+        ] #Block
+    ]
+    mrhs = ms.MRHS(mat)
+    mrhs.print_mrhs()
+
+    #print(generator.__next__())
+    #print(mrhs.find_all_solutions())
+    for i in mrhs.find_solution():
+        print(i)
     #print(mrhs.SolveWithVector(solution))
 
 
