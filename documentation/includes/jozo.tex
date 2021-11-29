@@ -1,0 +1,100 @@
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+
+
+\section{Trieda LoadFile(MRHS)}
+Táto trieda slúži na načítanie MRHS zo štandardného formátu. Ako vstupný parameter pre vytvorenie inštancie tohto objektu je potrebné zadať cestu k súboru, ktorý obsahuje MRHS v štandardnom formáte. Trieda LoadFile obsahuje dve interné funkcie pre načítanie vstupnej matice a riešení a funkciu get\_final\_matrix ktorá vráti riadky a im zodpovedajúce riešenia v blokoch. \begin{lstlisting}[caption={Príklad vstupného textového súboru triedy LoadFile(file\_name)}, label={lst:subor}]
+5 --> Pocet Riadkov
+4 --> Pocet Stlpcov
+3 2 -- [
+1 1
+1 1
+3 2 -- ] --> BlokN : Pocet Riadkov, BlokN : Pocet Rieseni
+[1 0 0  0  1  1 0 0] -- [
+[0 1 0  0  1  0 1 0]
+[0 0 0  1  1  0 0 1]
+[0 0 0  0  0  1 0 0]
+[0 0 1  0  1  1 1 1] -- ] --> Matica
+[1 1 1] -- [
+[1 0 1]
+
+[0]
+
+[1]
+
+[1 0 1]
+[0 1 0] -- ] --> Riesenia pre BlokN
+\end{lstlisting}
+
+\subsection{Funkcia get\_final\_matrix()}
+Táto funkcia vráti vstup vo formáte blokov ktoré sú reprezentované ako pole. Každý index v poli zodpovedá jednému bloku, ktorý obsahuje dve vnorené polia, ktoré zodpovedajú riadkom bloku a jeho riešeniam. \newline
+%"mystyle" code listing set
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption=Príklad volania funkcie get\_final\_matrix()]
+from MRHS_Solver import LoadFile as lf
+
+mat = lf.LoadFile("input.txt").get_final_matrix()
+\end{lstlisting}
+\begin{lstlisting}[caption=Príklad výstupu funckie get\_final\_matrix() pre vstupný súbor Listing~\ref{lst:subor}.]
+mat = [
+        [
+            [
+              [1, 0, 0],[0, 1, 0],[0, 0, 0],[0, 0, 0],[0, 0, 1] #Hlavna matica
+            ]
+            ,
+            [
+              [1, 1, 1],[1, 0, 1] #RHS
+            ]
+        ], #BLOCK
+        [
+            [
+                [0], [0], [1], [0], [0] #Hlavna matica
+            ]
+            ,
+            [
+                [0] #RHS
+            ]
+        ], #Block
+        [
+            [
+                [1], [1], [1], [0], [1] #Hlavna matica
+            ]
+            ,
+            [
+                [1] #RHS
+            ]
+        ], #Block
+        [
+            [
+              [1, 0, 0],[0, 1, 0],[0, 0, 1],[1, 0, 0],[1, 1, 1] #Hlavna matica
+            ]
+            ,
+            [
+              [1, 0, 1],[0, 1, 0] #RHS
+            ]
+        ] #Block
+    ]
+\end{lstlisting}
