@@ -5,6 +5,7 @@
 
 from MRHS_Solver import MRHS as ms
 from MRHS_Solver import LoadFile as lf
+from MRHS_Solver import CreateFile as cf
 
 if __name__ == '__main__':
 
@@ -17,4 +18,8 @@ if __name__ == '__main__':
     for i in mrhs.find_solution():
         print(i)
     # print(mrhs.SolveWithVector(solution))
+
+    file = cf.CreateFile(mrhs)
+    file.create_file('output.txt')
+
 
