@@ -8,7 +8,6 @@
 
 ## Functions:
 
----
 
 - [```__init__(mrhs = None:MRHS)```](#init)
 
