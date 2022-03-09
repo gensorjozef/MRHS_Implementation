@@ -1,8 +1,8 @@
-#Class: **CTypeMrhs** #
+# Class: **CTypeMrhs** 
  
-##Parameters:
+## Parameters:
 
-###c_system:MRHS_System 
+### c_system:MRHS_System 
 
 - CType MRHS representation
 
@@ -21,7 +21,7 @@
 - Parameters:
   - **mrhs**: python representation of MRHS
 
-###```get_py_mrhs()```:
+### ```get_py_mrhs()```:
 
 - Description:
   - Gets python representation of CType MRHS
