@@ -8,9 +8,16 @@ import os.path
 dll_name= "MRHS.dll"
 dll_absolute_path = os.path.dirname(os.path.abspath(__file__)) + os.path.sep + dll_name
 mrhs_lib = ctypes.CDLL(dll_absolute_path)
+
+mrhs_lib.wrapped_create_mrhs_fixed.argtypes = (c_int, c_int, c_int, c_int)
+mrhs_lib.wrapped_create_mrhs_fixed.restype = POINTER(MRHS_system)
+mrhs_lib.wrapped_create_mrhs_variable.argtypes = (c_int, c_int, POINTER(c_int), POINTER(c_int))
+mrhs_lib.wrapped_create_mrhs_variable.restype = POINTER(MRHS_system)
+
 class CTypeMRHS:
 
     def __init__(self, mrhs: MRHS = None):
+        self._dll_alocated = False
         if(mrhs != None):
             self.set_py_mrhs(mrhs)
         else:
@@ -78,7 +85,50 @@ class CTypeMRHS:
         pCount: POINTER(c_longlong) = pointer(p_count)
         p_restarts = c_longlong(0)
         pRestarts: POINTER(c_longlong) = pointer(p_restarts)
-        mrhs_lib.wrapped_solve_hc(self.c_system, maxt, pCount, pRestarts)
+        res = mrhs_lib.wrapped_solve_hc(self.c_system, maxt, pCount, pRestarts)
+        print(res)
+
+    def create_mrhs_fixed(self,nrows: int, nblocks: int, blocksize: int, rhscount: int):
+        if (self._dll_alocated):
+            self._clear_mrhs()
+        self._dll_alocated = True
+
+        ret = mrhs_lib.wrapped_create_mrhs_fixed(c_int(nrows),
+                                                 c_int(nblocks),
+                                                 c_int(blocksize),
+                                                 c_int(rhscount))
+
+        self._c_system = ret.contents
+
+    def create_mrhs_variable(self,nrows: int, nblocks: int, blocksizes: list[int], rhscounts: list[int]):
+        if(self._dll_alocated):
+            self._clear_mrhs()
+        self._dll_alocated = True
+        blocksizes_c = (c_int *nblocks)(*blocksizes[:nblocks])
+        rhscounts_c = (c_int*nblocks)(*rhscounts[:nblocks])
+        ret =mrhs_lib.wrapped_create_mrhs_variable(c_int(nrows),
+                                                   c_int(nblocks),
+                                                   blocksizes_c,
+                                                   rhscounts_c)
+        self._c_system = ret.contents
+
+    def fill_mrhs_random(self):
+        mrhs_lib.wrapped_fill_mrhs_random(pointer(self.c_system))
+
+    def fill_mrhs_random_sparse(self):
+        mrhs_lib.wrapped_fill_mrhs_random_sparse(pointer(self.c_system))
+
+    def fill_mrhs_random_sparse_extra(self,density:int):
+        mrhs_lib.wrapped_fill_mrhs_random_sparse_extra(pointer(self.c_system), c_int(density))
+
+    def __del__(self):
+        if(self._dll_alocated):
+            self._clear_mrhs()
+
+    def _clear_mrhs(self):
+        mrhs_lib.wrapped_clear_MRHS(pointer(self.c_system))
+        self._c_system = None
+        self._dll_alocated = False
 
 
 
