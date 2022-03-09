@@ -1,3 +1,5 @@
+[MRHS_Solver.CTypes](README.md#MRHS_Solver.CTypes)
+
 # Class: **SolverReport**
 
 ## Parameters:
