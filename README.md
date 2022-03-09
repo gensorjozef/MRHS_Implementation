@@ -5,7 +5,6 @@ We are a group of developers engaged in the development of MRHS equations and it
 
 ### Classes 
 
----
 #### MRHS_Solver.CTypes
 
 - [**CTypeMRHS**](CTypeMRHS.md) 
