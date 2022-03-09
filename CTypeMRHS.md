@@ -4,7 +4,7 @@
  
 ## Parameters:
 
-- c_system: MRHS_System
+- c_system: [MRHS_System](CStructs.md#mrhs_system)
 
   - CType MRHS representation
 

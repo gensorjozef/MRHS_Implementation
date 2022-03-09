@@ -5,13 +5,17 @@ We are a group of developers engaged in the development of MRHS equations and it
 
 ### Classes 
 
+---
 #### MRHS_Solver.CTypes
 
-- [CTypeMRHS](CTypeMRHS.md) 
+- [**CTypeMRHS**](CTypeMRHS.md) 
   - Wrapper class for C interactions
 
-- [SolverReport](SolverReport.md)
+- [**SolverReport**](SolverReport.md)
   - Solver report class for C implementation 
+  
+- [*Structs*](CStructs.md)
+
 
 
 
