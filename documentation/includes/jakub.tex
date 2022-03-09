@@ -1,0 +1,96 @@
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+\section{O projekte}
+\subsection{Predstavenie tímu}
+Na tomto projekte budú spolupracovať nasledovní študenti FEI STU.
+\subsubsection{Jakub Kupkovič}
+Člen Jakub Kupkovič pracoval na bakalárskej práci kde implementoval software na riešenie MRHS rovníc na grafickej karte. Má skúsenosti s programovaním v Pythone, C++, Jave a implementáciou riešení v CUDA prostredí. Tému si vybral kvôli záujmu vzdelávania v danej oblasti. V tíme bude mať pozíciu vývojára. 
+\subsubsection{Daniel Janči}
+Ďalší člen tímu, Daniel Janči, sa zaoberal výskumom v oblasti kryptografie. V záverečnej práci bakalárskeho štúdia sa zaoberal problémom SAT a využíval SAT solvery pre výskumné účely. Skúsenosti má prevažne v jazyku Java, Python a je vždy ochotný učiť sa nové veci. V tíme bude pracovať prevažne na vývoji.
+\subsubsection{Jakub Lengvarský}
+Člen Jakub Lengvarský má skúsenosti s vývojom webových aplikácií. Vývojom jednej z nich sa venoval aj vo svojej bakalárskej práci. Skúsenosti má najmä v jazykoch Java, PHP, Javascript a Python. Zaujíma ho aj problematika počítačovej bezpečnosti. V tíme bude mať na starosti tvorbu dokumentácie, správu webovej stránky a čiastočne aj samotný vývoj.
+\subsubsection{Jozef Genšor}
+Posledným členom tímu je Jozef Genšor. V bakalárskej práci sa zaoberal detekciou voľných parkovacích miest z kamerového záznamu. Skúsenosti či už pracovné alebo v osobných projektoch má hlavne v jazykoch Python a PHP. Tento projekt ho oslovil z dôvodu rozšírenia si vedomostí v problematike počítačovej bezpečnosti. V tomto projekte bude mať na starosti repozitár projektu a jeho kompozíciu a v neposlednom rade aj pomoc pri samotnom vývoji.
+\subsection{Motivácia}
+Šifrovanie má v dnešnej dobe široké využite.  Existuje niekoľko algoritmov ktoré zabezpečujú bezpečné zašifrovanie informácie. Účinnosť takéhoto algoritmu vieme zistiť pomocou kryptoanalýzy. Pri symetrických šifrách. Ak je algoritmus slabý tak vieme rýchlejšie zistiť kľuč k danej šifre. Algebraická kryptoanalýza, konkrétne reprezentácia pomocou systému rovníc s viacerými pravými stranami (MRHS) nie je v dnešnej rozšírená. Našou prácou by sme chceli túto skutočnosť zmeniť a vytvoriť prostredie, ktoré uľahčí používateľom prácu.
+\subsection{Návrh}
+Náš tím sa pokúsi vytvoriť prostredie s prostriedkami na jednoduchú implementáciu rôznych funkcií riešenia MRHS. Toto zabezpečíme výskumom danej problematiky a implementáciou optimálnych riešení v tvare Python knižnice. Zameriame sa na užitočné funkcie ako je napríklad načítanie matíc, ich riešenie pomocou rôznych metód.
+Všetka funkcionalita bude vo forme dokumentácie nahraná na web.
+\subsection{Časový plán}
+\begin{center}
+\begin{tabular}{||c c c c c c c c||} 
+ \hline
+ Meno & Po & Ut & St & Št & Pi & So & Ne \\ [0.5ex] 
+ \hline\hline
+ Jakub Kupkovič & 2h & 2h &  & 2h &  & 2h & \\ 
+ \hline
+ Daniel Janči & 2h & 2h &  & 2h &  & 2h & \\
+ \hline
+ Jakub Lengvarský & 2h & 2h &  & 2h &  & 2h & \\
+ \hline
+ Jozef Genšor & 2h & 2h &  & 2h &  & 2h & \\
+ \hline
+\end{tabular}
+\end{center}
+\subsection{Prostriedky}
+Pre širšiu dostupnosť implementácie pre rozličné hardwary bude potrebné zaobstarať tieto komponenty kvôli následnému testovaniu. Bude sa jednať najme o grafické karty od rozličných výrobcov alebo s rozličnými architektúrami.
+\section{MRHS rovnica}
+Táto dokumentácia sa zaoberá rovniciam s viacerými pravými stranami a ich riešeniami (MRHS).
+
+Označme si konečné pole s dvoma prvkami ako \textit{\textbf{F}}. Všetky vektory nad \textit{\textbf{F}} sú riadkové vektory a sú označené malými písmenami. Množiny vektorov sú označené veľkými písmenami a všetky matice sú označené tučným písmom.
+
+\newtheorem{definition}{Definícia}
+\begin{definition}
+   Rovnica s viacerými pravými stranami, je výraz v tvare
+
+\[ x \textit{\textbf{M}} \in S, \]
+
+\noindent kde \textit{\textbf{M}} je matica \begin{math} n \times l \end{math} a \begin{math}S \subset F^l \end{math} je množina l-bitových vektorov. Hovoríme, že \begin{math} x \in F^{n} \end{math} je riešením MRHS rovnice vtedy, a len vtedy, ak \begin{math}x\textit{\textbf{M}} \in S \end{math}.
+
+\vspace{1cm}
+\noindent Sústava MRHS rovníc M, je množina m MRHS rovníc, s rovnakým rozmerom n.
+
+\[ M = \left\{x \textit{\textbf{M}}_i \in S_i | 1 \leq i \leq m\right\} \]
+
+\noindent kde každé \begin{math}\textit{\textbf{M}}_i\end{math} je matica (\begin{math} n \times l_i \end{math}) a \begin{math} S_i \supset
+F^{l_i} \end{math}. Vektor \begin{math} x \in F^n \end{math} je riešením MRHS sústavy M, ak je riešením pre všetky MRHS rovnice v M.
+
+\vspace{1cm}
+
+\noindent \textbf{Zjednotená sústava matíc}: Vzhľadom na MRHS sústavu rovníc \begin{math}M = \left\{x \textit{\textbf{M}}_i \in S_i\right\} \end{math} môžeme spojiť všetky matice \begin{math}\textit{\textbf{M}}_i\end{math}, pretože všetky majú rovnaký počet riadkov. Takto spojenú maticu označujeme \textit{\textbf{M}}, a nazývame ju zjednotená sústava matíc.
+
+\[ \textit{\textbf{M}} =[\textit{\textbf{M}}_i|\textit{\textbf{M}}_i|...|\textit{\textbf{M}}_m]\]
+
+\noindent Podobne budeme označovať aj \begin{math}S_1 \times S_2 \times ... \times S_m\end{math} ako S. Riešením sústavy MRHS je nájdenie takého \begin{math}x \in F^n\end{math}, pre ktoré platí \begin{math}x\textit{\textbf{M}} \in S\end{math}.
+\end{definition}
+
+\subsection{Riedkosť matice}
+\noindent \textbf{Zjednotená sústava matíc} je dvojrozmerný dátový objekt tvorený m riadkami a n stĺpcami a preto obsahuje m × n prvkov. Počet prvkov s nulovou hodnotou vydelený celkovým
+počtom prvkov sa nazýva riedkosť (sparsity) matice. Ak je riedkosť matice
+väčšia ako 0.5, potom sa matica nazýva riedka.
+
+\section{Implementácia riešenia MRHS rovníc}
+Táto implementácia riešenia MRHS rovníc bolo implementovaná v jazyku Python (konkrétne verzia 3.8). Medzi základné funkcionality programu patrí generovanie a inicializácia matice s náhodnými hodnotami, načítanie matice zo súboru a nájdenie všetkých riešení MRHS rovnice.
+
