@@ -50,23 +50,23 @@ class SolverReport:
             self.results = [results[i].value for i in range(save_count)]
 
         self.run_time: float = run_time
-        self.xors_count: int = xors.contents.value
+        self.xor_count: int = xors.contents.value
         self.found_solutions: int = solutions_count.contents.value
 
     def print_results(self):
         print("Found solutions: {}".format(self.found_solutions))
-        print("Xors used: {}".format(self.xors_count))
+        print("Xors used: {}".format(self.xor_count))
         print("Runtime (s): {}".format(self.run_time))
 
-    def print_solution(self):
+    def get_solution(self) -> int:
         if len(self.results) <= 0:
-            print("No solutions saved")
-            return
+            return None
 
         while True:
             for solution in self.results:
-                print(solution)
-                yield
+                yield solution
+            return None
+
 
 
 class CTypeMRHS:
