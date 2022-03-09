@@ -2,11 +2,14 @@
  
 ## Parameters:
 
-### c_system:MRHS_System 
+### c_system:MRHS_System
 
+---
 - CType MRHS representation
 
 ## Functions:
+
+---
 
 - [```__init__(mrhs = None:MRHS)```](#init)
 
@@ -26,7 +29,7 @@
 
 - [```fill_mrhs_random_sparse_extra(density: int)```](#fill-mrhs-random-sparse-extra)
 
-
+---
 ### Init
 
  ```__init__(mrhs = None:MRHS)```:
@@ -35,6 +38,8 @@
 - Parameters:
   - **mrhs** : python representation of MRHS
   
+---
+
 ### Set Python MRHS
 
  ```set_py_mrhs(mrhs:MRHS)```:
@@ -43,6 +48,8 @@
   - Sets python type MRHS and updates CType MRHS
 - Parameters:
   - **mrhs**: python representation of MRHS
+
+---
 
 ### Get Python MRHS
 
@@ -53,6 +60,8 @@
 - Return:
   - **mrhs**: python representation of MRHS
  
+---
+
 ### Solve HillClimbing 
 
  ```solve_hc(maxt: int)```:
@@ -61,6 +70,8 @@
   - Solves MRHS using hill climbing algorithm
 - Parameters:
   - **mrhs**: python representation of MRHS
+
+---
 
 ### Create MRHS Fixed
 
@@ -74,6 +85,8 @@
   - **blocks_size**: number of columns in block
   - **rhs_count**: number of rhs in block
  
+---
+
 ### Create MRHS Variable
 
 ```create_mrhs_variable(nrows: int, nblocks: int, blocks_sizes:list[int], rhs_counts: list[int])```:
@@ -86,17 +99,23 @@
   - **blocks_sizes**: number of collumns in each block
   - **rhs_counts**: number of rhs in each block
 
+---
+
 ### Fill MRHS Random
 
  ```fill_mrhs_random()```:
 - Description:
   - Fills matrix with random value bits
  
+---
+
 ### Fill MRHS Random Sparse
 
  ```fill_mrhs_random_sparse()```:
 - Description:
   - Fills matrix random sparse
+
+---
 
 ### Fill MRHS Random Sparse Extra
 
