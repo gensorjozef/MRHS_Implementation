@@ -1,8 +1,9 @@
 import numpy as np
-from MRHS_Solver import MRHS as ms
-from MRHS_Solver import LoadFile as lf
+from sympy import Matrix
+from MRHS_Solver.CTypes import CTypeMRHS
 
 
+# Returns numpy matrix
 def extract_matrix_from_mrhs(mrhs):
     mat = []
     for i in range(mrhs.vector_size):
@@ -24,9 +25,9 @@ def update_mrhs_matrix(mrhs, mat):
                 col += 1
 
 
+# https://gist.github.com/popcornell/bc29d1b7ba37d824335ab7b6280f7fec
 def gf2elim(M):
     m, n = M.shape
-
     i = 0
     j = 0
 
@@ -47,13 +48,9 @@ def gf2elim(M):
         col[i] = 0  # avoid xoring pivot row with itself
 
         flip = np.outer(col, aijn)
-
         M[:, j:] = M[:, j:] ^ flip
-
         i += 1
         j += 1
-
-    return M
 
 
 def gauss_elim_mrhs(mrhs):
@@ -62,10 +59,23 @@ def gauss_elim_mrhs(mrhs):
     update_mrhs_matrix(mrhs, mat)
 
 
-mat = lf.LoadFile("D:\škola\TP1\MRHS_Implementation\input.txt").get_final_matrix()
-mrhs = ms.MRHS(mat)
-mrhs.print_mrhs()
+def gauss_elim_mrhs2(mrhs):
+    mat = extract_matrix_from_mrhs(mrhs)
+    tmp_mat = mat.tolist()
+    np_mat = np.matrix(Matrix(tmp_mat).echelon_form())
+    np_mat[np_mat < 0] = 1
+    update_mrhs_matrix(mrhs, np_mat)
 
-gauss_elim_mrhs(mrhs)
 
-mrhs.print_mrhs()
+# cmrhs = CTypeMRHS()
+# cmrhs.create_mrhs_variable(6, 4, [2, 2, 2, 3], [1, 1, 1, 2])
+# cmrhs.fill_mrhs_random()
+# mrhs1 = cmrhs.get_py_mrhs()
+# mrhs2 = cmrhs.get_py_mrhs()
+# mrhs1.print_mrhs()
+#
+# gauss_elim_mrhs(mrhs1)
+# mrhs1.print_mrhs()
+#
+# gauss_elim_mrhs2(mrhs2)
+# mrhs2.print_mrhs()
