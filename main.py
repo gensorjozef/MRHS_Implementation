@@ -6,7 +6,8 @@
 from MRHS_Solver import MRHS as ms
 from MRHS_Solver import LoadFile as lf
 from MRHS_Solver import CreateFile as cf
-from MRHS_Solver.CTypes import CTypeMRHS
+from MRHS_Solver.CTypes import CTypeMRHS,SolverReport
+import MRHS_Solver.GaussElimination as gs
 from time import sleep
 
 
@@ -17,24 +18,27 @@ if __name__ == '__main__':
 
 
     cmrhs = CTypeMRHS(mrhs=mrhs)
-    cmrhs.get_py_mrhs().print_mrhs()
+    # cmrhs.get_py_mrhs().print_mrhs()
+    #
+    # cmrhs.create_mrhs_fixed(6, 4, 4, 4)
+    # cmrhs.fill_mrhs_random()
+    # cmrhs.get_py_mrhs().print_mrhs()
+    #
+    # cmrhs.create_mrhs_variable(6, 4, [2, 2, 2, 3], [1, 1, 1, 2])
+    # cmrhs.fill_mrhs_random()
+    # cmrhs.get_py_mrhs().print_mrhs()
+    #
+    # cmrhs.create_mrhs_variable(6, 4, [2, 2, 2, 3], [1, 1, 1, 2])
+    # cmrhs.fill_mrhs_random_sparse()
+    # cmrhs.get_py_mrhs().print_mrhs()
 
-    cmrhs.create_mrhs_fixed(6, 4, 4, 4)
-    cmrhs.fill_mrhs_random()
-    cmrhs.get_py_mrhs().print_mrhs()
-
-    cmrhs.create_mrhs_variable(6, 4, [2, 2, 2, 3], [1, 1, 1, 2])
-    cmrhs.fill_mrhs_random()
-    cmrhs.get_py_mrhs().print_mrhs()
-
-    cmrhs.create_mrhs_variable(6, 4, [2, 2, 2, 3], [1, 1, 1, 2])
-    cmrhs.fill_mrhs_random_sparse()
-    cmrhs.get_py_mrhs().print_mrhs()
-
-    cmrhs.create_mrhs_fixed(6, 4, 4, 4)
+    cmrhs.create_mrhs_fixed(6, 2, 3, 4)
     cmrhs.fill_mrhs_random_sparse_extra(2)
-    cmrhs.get_py_mrhs().print_mrhs()
+    report = cmrhs.solve(5000,save_file="solutions.txt")
+    report.print_results()
+    mrhs = cmrhs.get_py_mrhs()
 
+    mrhs.print_mrhs()
 
     file = cf.CreateFile(mrhs)
     file.create_file('output.txt')

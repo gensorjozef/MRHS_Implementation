@@ -2,22 +2,20 @@
  
 ## Parameters:
 
-### c_system:MRHS_System
+- c_system: MRHS_System
 
----
-- CType MRHS representation
+  - CType MRHS representation
 
 ## Functions:
 
----
 
 - [```__init__(mrhs = None:MRHS)```](#init)
 
 - [```set_py_mrhs(mrhs:MRHS)```](#set-python-mrhs)
 
-- [```get_py_mrhs()```](#get-python-mrhs)
+- [```get_py_mrhs() -> MRHS```](#get-python-mrhs)
 
-- [```solve_hc(maxt: int)```](#solve-hillclimbing)
+- [```solve_hc(maxt: int) -> int```](#solve-hillclimbing)
 
 - [```create_mrhs_fixed(nrows: int, nblocks: int, blocks_size:int, rhs_count: int)```](#create-mrhs-fixed)
 
@@ -32,7 +30,7 @@
 ---
 ### Init
 
- ```__init__(mrhs = None:MRHS)```:
+ ```__init__(mrhs: MRHS = None)```:
 - Description
   - Initialization function that creates CType MRHS
 - Parameters:
@@ -69,7 +67,9 @@
 - Description:
   - Solves MRHS using hill climbing algorithm
 - Parameters:
-  - **mrhs**: python representation of MRHS
+  - **maxt**: 
+- Return:
+  - int: 1 if found solution 0 if not
 
 ---
 
@@ -123,4 +123,8 @@
 - Description:
   - Fills matrix random sparse with density
 - Parameters:
-  -  **density**: density of fill
+  - **density**: density of fill
+
+# TODO:
+
+- Solve results return class
