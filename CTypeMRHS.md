@@ -15,7 +15,7 @@
 
 - [```get_py_mrhs() -> MRHS```](#get-python-mrhs)
 
-- [```solve_hc(maxt: int) -> int```](#solve-hillclimbing)
+- [```solve(maxt: int, report_solutions: int = 0, algorithm="hc", save_file: str = None) -> SolverReport```](#solve)
 
 - [```create_mrhs_fixed(nrows: int, nblocks: int, blocks_size:int, rhs_count: int)```](#create-mrhs-fixed)
 
@@ -60,16 +60,19 @@
  
 ---
 
-### Solve HillClimbing 
+### Solve  
 
- ```solve_hc(maxt: int)```:
+ ```solve(maxt: int, report_solutions: int = 0, algorithm="hc", save_file: str = None) -> SolverReport```:
 
 - Description:
   - Solves MRHS using hill climbing algorithm
 - Parameters:
-  - **maxt**: 
+  - **maxt**:
+  - **report_solutions** - amount of solutions to save into SolutionReport
+  - **algorithm** - optimization algorithm ("hc","rz")
+  - **save_file** - save file location, will not save if None
 - Return:
-  - int: 1 if found solution 0 if not
+  - [SolverReport](SolverReport.md): report class
 
 ---
 
