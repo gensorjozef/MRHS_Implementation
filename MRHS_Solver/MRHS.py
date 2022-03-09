@@ -1,3 +1,6 @@
+from MRHS_Solver.BlockMatrix import *
+from MRHS_Solver.Controllers import *
+from MRHS_Solver.RHS import *
 import random
 
 
@@ -62,7 +65,7 @@ class MRHS:
         print("Testing {} vectors...".format(num))
         for i in range(num):
             if self.solve_with_vector(i):
-                vec = bitfield(i)
+                vec = Controllers.bitfield(i)
                 for j in range(self.vector_size - len(vec)):
                     vec.insert(0, 0)
                 yield vec
@@ -85,7 +88,7 @@ class MRHS:
         return solutions
 
     def solve_with_vector(self, vector):
-        vector_array = bitfield(vector)
+        vector_array = Controllers.bitfield(vector)
         vector_array_fin = vector_array.copy()
         for i in range(self.vector_size - len(vector_array)):
             vector_array_fin.insert(0, 0)
@@ -105,144 +108,8 @@ class MRHS:
         return True
 
 
-class BlockMatrix:
-
-   # def __init__(self, dim_x, dim_y, rhs, ran=False):
-     #   self.matrix = initialise_2d_matrix(dim_x, dim_y)
-      #  self.rhsMatrix = rhs
-      #  if ran:
-      #      self.matrix = fill_2d_matrix_random(self.matrix)
-      #      self.remove_block_matrix_dupes()
-      #  print("Created BlockMatrix")
-
-    def initWithMatrix(self,matrix):
-        self.matrix = matrix[0]
-        self.rhsMatrix = RHS()
-        self.rhsMatrix.initWithVectors(matrix[1])
-
-    def __int__(self, mat):
-        self.matrix = mat[0]
-        self.rhsMatrix = RHS()
-        self.rhsMatrix.initWithVectors(mat[1])
-
-    def remove_block_matrix_dupes(self):
-        for row in self.rhsMatrix.matrix:
-            if self.rhsMatrix.contains_duplicate(row):
-                self.rhsMatrix.remove_first_duplicate(row)
-
-    def print_row(self, row_id):
-        for row_byte in self.matrix[row_id]:
-            print(row_byte, end='')
-
-    def try_print_rhs(self, rhs_id):
-        if rhs_id < len(self.rhsMatrix.matrix):
-            self.rhsMatrix.print_row(rhs_id)
-            return True
-        return False
 
 
-class RHS:
-    #def __init__(self, vector_len, vector_count, ran=False):
-      #  self.matrix = initialise_2d_matrix(vector_len, vector_count)
-      #  if ran:
-      #      self.matrix = fill_2d_matrix_random(self.matrix)
-      #  print("Created RHS")
-
-    def __int__(self,vectors):
-        self.matrix = vectors
-
-    def initWithVectors(self,vectors):
-        self.matrix = vectors
-
-    def contains_duplicate(self, vec):
-        count = 0
-
-        for row in self.matrix:
-            cont = True
-            for col in range(len(row)):
-                if row[col] != vec[col]:
-                    cont = False
-            if cont:
-                count += 1
-        if count > 1:
-            return True
-        return False
-
-    def remove_first_duplicate(self, vec):
-        for row in self.matrix:
-            cont = True
-            for col in range(len(row)):
-                if row[col] != vec[col]:
-                    cont = False
-            if cont:
-                self.matrix.remove(row)
-                return
-
-    def contains(self, vec):
-        for row in self.matrix:
-            cont = True
-            for col in range(len(row)):
-                if row[col] != vec[col]:
-                    cont = False
-            if cont:
-                return True
-        return False
-
-    def print_row(self, row_id):
-        for row_byte in self.matrix[row_id]:
-            print(row_byte, end='')
 
 
-def fill_2d_matrix_random(mat):
-    for row in range(len(mat)):
-        for col in range(len(mat[row])):
-            mat[row][col] = get_random_byte()
-    return mat
-
-
-def initialise_2d_matrix(dimX, dimY):
-    m = [[0] * dimX for i in range(dimY)]
-    return m
-
-
-def get_random_byte():
-    return random.randint(0, 1)
-
-
-def bitfield(n):
-    return [int(digit) for digit in bin(n)[2:]]
-
-class LoadFile:
-    def __init__(self, file_name):
-        self.file_name = file_name
-
-    def read_from_file(self):
-        print(self.file_name)
-
-        fileObj = open(self.file_name, "r")  # opens the file in read mode
-        words = fileObj.read().splitlines()  # puts the file into an array
-        fileObj.close()
-        rowsNumber = int(words[0])
-        blocksNumber = int(words[1])
-        blocksLen = []
-        blocksAnswersLen = []
-        for i in range(blocksNumber):
-            blockRaw = words[i+1]
-            blockInfo = blockRaw.split(' ')
-            blockLen = blockInfo[0]
-            blockAnswers = blockInfo[1]
-            blocksLen.append(blockLen)
-            blocksAnswersLen.append(blockAnswers)
-        matrix = [[] for j in range(blocksNumber)]
-        for i in range(rowsNumber):
-            rowRaw = words[1+blocksNumber+i]
-            rowRaw = rowRaw[1:len(rowRaw)-1] # odstrani []
-            rowBlocks = rowRaw.split('  ')
-
-            for rowBlock in rowBlocks:
-                cols = []
-                for col in rowBlock:
-                    cols.append(col)
-                matrix.append(cols)
-        print(matrix)
 

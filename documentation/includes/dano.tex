@@ -1,0 +1,63 @@
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+
+
+\section{Trieda CreateFile(MRHS)}
+Táto trieda slúži na vypísanie MRHS v štandardnom formáte. Pre vytvorenie objektu tohto typu je potrebné na vstup dať už vytvorený objekt typu MRHS. Trieda CreateFile obsahuje jednu funkciu s názvom create\_file. 
+
+\subsection{Funkcia create\_file(file\_name)}
+Vstup tejto funkcie, file\_name, je reťazec, ktorý predstavuje názov textového súboru (aj s príponou .txt). Táto funkcia po zavolaní vytvorí textový súbor s názvom file\_name a vypíše do neho MRHS sústavu z daného objektu typu CreateFile. \newline
+%"mystyle" code listing set
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption=Príklad volania funkcie create\_file(file\_name)]
+from MRHS_Solver import CreateFile as cf
+
+file = cf.CreateFile(mrhs)
+file.create_file('output.txt')
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Príklad výstupného textového súboru funkcie create\_file(file\_name)]
+5
+4
+3 2
+1 1
+1 1
+3 2
+[1 0 0  0  1  1 0 0]
+[0 1 0  0  1  0 1 0]
+[0 0 0  1  1  0 0 1]
+[0 0 0  0  0  1 0 0]
+[0 0 1  0  1  1 1 1]
+[1 1 1]
+[1 0 1]
+
+[0]
+
+[1]
+
+[1 0 1]
+[0 1 0]
+\end{lstlisting}

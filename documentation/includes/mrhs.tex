@@ -1,0 +1,48 @@
+\section{Trieda MRHS}
+
+Hlavná trieda knižnice. Uchováva v sebe údaje o sústave Matíc. Štrukturovaná je po blokoch, kde každý blok má úloženú hlavnú maticovú časť a časť s právými stranami.
+\subsection{Konštruktor \_\_init\_\_(vector\_size)}
+Inicializuje MRHS maticu s počtom riadkov.
+\begin{itemize}
+    \item vector\_size - Počet riadkov sústavy
+\end{itemize}
+
+\subsection{Premenné}
+\begin{itemize}
+    \item blocks\_array - Obsahuje list všetkých blokov
+    \item vector\_size - Obsahuje počet riadkov
+\end{itemize}
+\subsection{Funkcia init\_with\_matrix(vectors )}
+Funkcia vytvorí MRHS pomocou listu, vo formáte listu blokov, kde 1 blok je reprezentovaný ako 2 listy, ktoré obsahujú riadky v hlavnej matici a odpovede.
+\begin{itemize}
+    \item vectors - 4D matica [Bloky[Matica[Vektory],RHS[Vektory]]]
+\end{itemize}
+\subsection{Funkcia generate\_random\_block\_array(blocks,rhs\_fill,seed=0)}
+Funkcia vygeneruje náhodné hodnoty matice.
+\begin{itemize}
+    \item blocks - pole reprezentuje veľkosti blokov
+    \item rhs\_fill - reprezentuje percento pravých strán
+\end{itemize}
+
+
+\subsection{Funkcia print\_mrhs()}
+Funkcia vypíše maticu do konzoly.
+
+\begin{lstlisting}[caption={Výpis MRHS}, label={lst:vypis}]
+100 0 1 100 
+010 0 1 010 
+000 1 1 001 
+000 0 0 100 
+001 0 1 111 
+------------------------------
+111 0 1 101 
+101     010 
+\end{lstlisting}
+
+\subsection{Funkcia find\_all\_solutions()}
+Nájde všetky riešenia MRHS sústavy a vráti ich v tvare poľa.
+\subsubsection{Navratová hodnota}
+Pole obsahujúce všetky vektory, ktoré sú riešením MRHS sústavy.
+
+\subsection{Generator find\_solution()}
+Generátor vracia riešenia MRHS sústavy. Ak už nemá riešenie tak vráti hodnotu None.
