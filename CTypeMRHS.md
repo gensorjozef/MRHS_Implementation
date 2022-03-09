@@ -27,7 +27,7 @@
 - [```fill_mrhs_random_sparse_extra(density: int)```](#fill-mrhs-random-sparse-extra)
 
 
-###Init
+### Init
 
  ```__init__(mrhs = None:MRHS)```:
 - Description
