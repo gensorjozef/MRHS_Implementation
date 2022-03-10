@@ -22,8 +22,8 @@ mrhs_lib = ctypes.CDLL(dll_absolute_path)
 # function prototypes
 mrhs_lib.wrapped_solve_rz_file_out.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong),c_int,c_char_p )
 mrhs_lib.wrapped_solve_hc_file_out.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong),c_int,c_char_p )
-#mrhs_lib.wrapped_solve_rz.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong), c_int)
-#mrhs_lib.wrapped_solve_hc.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong), c_int)
+mrhs_lib.wrapped_solve_rz.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong), c_int, CFUNCTYPE(c_int, c_longlong))
+mrhs_lib.wrapped_solve_hc.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong), c_int, CFUNCTYPE(c_int, c_longlong))
 
 
 mrhs_lib.wrapped_create_mrhs_fixed.argtypes = (c_int, c_int, c_int, c_int)
@@ -67,8 +67,6 @@ class SolverReport:
                 yield solution
             return None
 
-def idk(a):
-    print(a)
 
 class CTypeMRHS:
 
