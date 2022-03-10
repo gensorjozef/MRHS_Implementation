@@ -6,6 +6,7 @@ import MRHS_Solver.CTypes.utils as utils
 import os.path
 import platform
 import time
+from collections.abc import Callable
 
 dll_name: str
 if (platform.system() == "Windows"):
@@ -21,10 +22,9 @@ mrhs_lib = ctypes.CDLL(dll_absolute_path)
 # function prototypes
 mrhs_lib.wrapped_solve_rz_file_out.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong),c_int,c_char_p )
 mrhs_lib.wrapped_solve_hc_file_out.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong),c_int,c_char_p )
-mrhs_lib.wrapped_solve_rz.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong),c_int)
-mrhs_lib.wrapped_solve_hc.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong),c_int)
+mrhs_lib.wrapped_solve_rz.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong), c_int, CFUNCTYPE(c_int, c_longlong))
+mrhs_lib.wrapped_solve_hc.argtypes = (MRHS_system, c_int, POINTER(c_longlong), POINTER(c_longlong), POINTER(c_longlong), c_int, CFUNCTYPE(c_int, c_longlong))
 
-mrhs_lib.wrapped_get_next_solution.argtype = POINTER(MRHS_system)
 
 mrhs_lib.wrapped_create_mrhs_fixed.argtypes = (c_int, c_int, c_int, c_int)
 mrhs_lib.wrapped_create_mrhs_fixed.restype = POINTER(MRHS_system)
@@ -68,16 +68,23 @@ class SolverReport:
             return None
 
 
-
 class CTypeMRHS:
 
-    def __init__(self, mrhs: MRHS = None):
+    def __init__(self, mrhs: MRHS = None, callback = None):
         self._dll_allocated = False
         if (mrhs != None):
             self.set_py_mrhs(mrhs)
         else:
             self._py_system = None
             self._c_system = MRHS_system()
+        self._call_solution_callback_prototype = CFUNCTYPE(c_int, c_longlong)
+        self.call_solution_callback = None
+
+        if callback is not None:
+            self.call_solution_callback = self._call_solution_callback_prototype(callback)
+
+    def _solution_callback(self,sol):
+        print(sol)
 
     def set_py_mrhs(self, mrhs: MRHS):
         self._py_system = mrhs
@@ -160,9 +167,6 @@ class CTypeMRHS:
         run_time = time.time() - start_time
         return SolverReport(p_results, run_time, pRestarts, pCount, save_results)
 
-    def get_next_solution(self):
-        return mrhs_lib.wrapped_get_next_sollution(pointer(self.c_system))
-
     def solve_rz(self, maxt, pCount, pRestarts, p_results, save_file: str = None, save_results: int = 0):
         res = 0
         if save_file is None:
@@ -171,7 +175,8 @@ class CTypeMRHS:
                                             pCount,
                                             pRestarts,
                                             p_results,
-                                            c_int(save_results))
+                                            c_int(save_results),
+                                            self.call_solution_callback)
         else:
             res = mrhs_lib.wrapped_solve_rz_file_out(self.c_system,
                                                      maxt,
@@ -179,7 +184,7 @@ class CTypeMRHS:
                                                      pRestarts,
                                                      p_results,
                                                      c_int(save_results),
-                                                     create_string_buffer(("./{}".format(save_file)).encode("ASCII")))
+                                                     create_string_buffer(("{}".format(save_file)).encode("ASCII")))
 
     def solve_hc(self, maxt, pCount, pRestarts, p_results, save_file: str = None, save_results: int = 0):
         res = 0
@@ -189,7 +194,8 @@ class CTypeMRHS:
                                             pCount,
                                             pRestarts,
                                             p_results,
-                                            c_int(save_results))
+                                            c_int(save_results),
+                                            self.call_solution_callback)
         else:
             res = mrhs_lib.wrapped_solve_hc_file_out(self.c_system,
                                                      maxt,
@@ -197,7 +203,7 @@ class CTypeMRHS:
                                                      pRestarts,
                                                      p_results,
                                                      c_int(save_results),
-                                                     create_string_buffer(("./{}".format(save_file)).encode("ASCII")))
+                                                     create_string_buffer(("{}".format(save_file)).encode("ASCII")))
 
     def create_mrhs_fixed(self, nrows: int, nblocks: int, blocksize: int, rhscount: int):
         if self._dll_allocated:
