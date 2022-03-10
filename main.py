@@ -7,7 +7,8 @@ import ctypes
 from MRHS_Solver import MRHS as ms
 from MRHS_Solver import LoadFile as lf
 from MRHS_Solver import CreateFile as cf
-from MRHS_Solver.CTypes import CTypeMRHS,SolverReport
+from MRHS_Solver.CTypes.CTypeMRHS import CTypeMRHS
+from MRHS_Solver.CTypes.SolverReport import SolverReport
 import MRHS_Solver.GaussElimination as gs
 from time import sleep
 
