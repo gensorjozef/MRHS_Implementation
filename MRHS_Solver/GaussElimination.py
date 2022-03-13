@@ -94,6 +94,7 @@ def find_col_index_of_pivot(mat, row_index):
     for j in range(cols):
         if mat[row_index][j] == 1:
             return j
+    return -1
 
 
 def is_pivot_row(row_index, col_index, mat):
@@ -163,6 +164,8 @@ def swap_cols_blocks_rhss(mrhs):
         for j in range(len(block_i[0])):
             if block_i[last_row_index][j] != 1:
                 new_col_index = find_col_index_of_pivot(block_i, last_row_index)
+                if new_col_index == -1:
+                    break
                 swap_cols(j, new_col_index, block_i)
                 swap_cols(j, new_col_index, rhs_i)
             last_row_index += 1
@@ -178,11 +181,12 @@ def gauss_elim_mrhs(mrhs):
     update_mrhs_matrix(mrhs, matrix)
     swap_cols_blocks_rhss(mrhs)
 
+
 # test code
-# cmrhs = CTypeMRHS()
-# cmrhs.create_mrhs_fixed(6, 4, 4, 4)
-# cmrhs.fill_mrhs_random_sparse_extra(2)
-# mrhs = cmrhs.get_py_mrhs()
-# gauss_elim_mrhs(mrhs)
-# mrhs.print_mrhs()
-# mrhs.print_mrhs()
+cmrhs = CTypeMRHS()
+cmrhs.create_mrhs_fixed(6, 4, 4, 4)
+cmrhs.fill_mrhs_random_sparse_extra(2)
+mrhs = cmrhs.get_py_mrhs()
+mrhs.print_mrhs()
+gauss_elim_mrhs(mrhs)
+mrhs.print_mrhs()
