@@ -183,10 +183,10 @@ def gauss_elim_mrhs(mrhs):
 
 
 # test code
-cmrhs = CTypeMRHS()
-cmrhs.create_mrhs_fixed(6, 4, 4, 4)
-cmrhs.fill_mrhs_random_sparse_extra(2)
-mrhs = cmrhs.get_py_mrhs()
-mrhs.print_mrhs()
-gauss_elim_mrhs(mrhs)
-mrhs.print_mrhs()
+# cmrhs = CTypeMRHS()
+# cmrhs.create_mrhs_fixed(6, 4, 4, 4)
+# cmrhs.fill_mrhs_random_sparse_extra(2)
+# mrhs = cmrhs.get_py_mrhs()
+# mrhs.print_mrhs()
+# gauss_elim_mrhs(mrhs)
+# mrhs.print_mrhs()
