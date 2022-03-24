@@ -1,19 +1,6 @@
 from MRHS_Solver.CTypes import CTypeMRHS
 
 
-def create_indentity_mat(mrhs):
-    i_mat = []
-    for i in range(mrhs.vector_size):
-        row = []
-        for j in range(mrhs.vector_size):
-            if i == j:
-                row.append(1)
-            else:
-                row.append(0)
-        i_mat.append(row)
-    return i_mat
-
-
 def extract_matrix_from_mrhs(mrhs):
     mat = []
     for i in range(mrhs.vector_size):
@@ -125,20 +112,22 @@ def is_pivot_col(row_id, col_id, mat):
     return True
 
 
-def create_pivots(mat):
+def create_pivots(mat, i_mat):
     rows = len(mat)
     cols = len(mat[0])
     for i in range(rows):
         for j in range(cols):
             if is_pivot_row(i, j, mat):
                 row_i = mat[i]
+                i_row_i = i_mat[i]
                 for k in range(rows):
                     if mat[k][j] == 1 and k != i:
                         mat[k] = xor_rows(mat[k], row_i)
+                        i_mat[k] = xor_rows(i_mat[k], i_row_i)
                 break
 
 
-def sort_rows(mat):
+def sort_rows(mat, i_mat):
     rows = len(mat)
     i = 0
     j = 0
@@ -154,11 +143,12 @@ def sort_rows(mat):
             continue
         if i != i_piv:
             swap_rows(i, i_piv, mat)
+            swap_rows(i, i_piv, i_mat)
         j += 1
         i += 1
 
 
-def sub_rows(mat):
+def sub_rows(mat, i_mat):
     rows = len(mat)
     cols = len(mat[0])
     i = 1
@@ -169,15 +159,16 @@ def sub_rows(mat):
         for k in range(i):
             if mat[k][j] == 1:
                 mat[k] = xor_rows(mat[i], mat[k])
+                i_mat[k] = xor_rows(i_mat[i], i_mat[k])
         i += 1
         if i >= rows:
             break
 
 
-def row_elim(mat):
-    create_pivots(mat)
-    sort_rows(mat)
-    sub_rows(mat)
+def row_elim(mat, i_mat):
+    create_pivots(mat, i_mat)
+    sort_rows(mat, i_mat)
+    sub_rows(mat, i_mat)
 
 
 def swap_cols_blocks_rhss(mrhs):
@@ -222,9 +213,8 @@ def xor_cols_blocks_rhss(mrhs):
 
 
 def gauss_elim_mrhs(mrhs):
-    # id_matrix = create_indentity_mat(mrhs) TODO
     matrix = extract_matrix_from_mrhs(mrhs)
-    row_elim(matrix)
+    row_elim(matrix, mrhs.ident_matrix)
     update_mrhs_matrix(mrhs, matrix)
     swap_cols_blocks_rhss(mrhs)
     xor_cols_blocks_rhss(mrhs)
@@ -236,7 +226,7 @@ def print_mat(mat):
     print()
 
 
-# # test code
+# test code
 # cmrhs = CTypeMRHS()
 # cmrhs.create_mrhs_variable(8, 4, [6, 4, 4, 4], [4, 1, 1, 7])
 # cmrhs.fill_mrhs_random_sparse_extra(10)
@@ -247,4 +237,4 @@ def print_mat(mat):
 # gauss_elim_mrhs(mrhs)
 # mrhs.print_mrhs()
 #
-# print_mat(create_indentity_mat(mrhs))
+# print_mat(mrhs.ident_matrix)
