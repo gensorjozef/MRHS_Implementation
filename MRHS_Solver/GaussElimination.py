@@ -1,7 +1,9 @@
-from MRHS_Solver.CTypes import CTypeMRHS
-
-
 def extract_matrix_from_mrhs(mrhs):
+    """
+    Extracts the matrix from MRHS object and returns it as a 2D array.
+    :param mrhs: instance of class MRHS
+    :return: matrix as a 2D array
+    """
     mat = []
     for i in range(mrhs.vector_size):
         row = []
@@ -13,6 +15,12 @@ def extract_matrix_from_mrhs(mrhs):
 
 
 def update_mrhs_matrix(mrhs, mat):
+    """
+    Overwrites the matrix in MRHS object.
+    :param mrhs: instance of class MRHS
+    :param mat: matrix as a 2D array
+    :return: None
+    """
     for i in range(mrhs.vector_size):
         col = 0
         for j in range(len(mrhs.block_array)):
@@ -22,22 +30,54 @@ def update_mrhs_matrix(mrhs, mat):
 
 
 def extract_block_form_mrhs(mrhs, block_num):
+    """
+    Returns a block with index block_num from MRHS object as a 2D array.
+    :param mrhs: instance of class MRHS
+    :param block_num: index of a block
+    :return: block as a 2D array
+    """
     return mrhs.block_array[block_num].matrix
 
 
 def update_mrhs_block(mrhs, block_num, block):
+    """
+    Overwrites a block with index block_num in MRHS object.
+    :param mrhs: instance of class MRHS
+    :param block_num: index of a block
+    :param block: block as a 2D array
+    :return: None
+    """
     mrhs.block_array[block_num].matrix = block
 
 
 def extract_rhs_from_mrhs(mrhs, rhs_num):
+    """
+    Returns a RHS with index rhs_num from MRHS object as a 2D array.
+    :param mrhs: instance of class MRHS
+    :param rhs_num: index of a RHS
+    :return: RHS as a 2D array
+    """
     return mrhs.block_array[rhs_num].rhsMatrix.matrix
 
 
 def update_mrhs_rhs(mrhs, rhs_num, rhs):
+    """
+    Overwrites a RHS with index rhs_num in MRHS object.
+    :param mrhs: instance of class MRHS
+    :param rhs_num: index of a RHS
+    :param rhs: RHS as a 2D array
+    :return: None
+    """
     mrhs.block_array[rhs_num].rhsMatrix.matrix = rhs
 
 
 def xor_rows(row1, row2):
+    """
+    Returns array which is a product of xoring arrays row1 and row2.
+    :param row1: array
+    :param row2: array
+    :return: array
+    """
     row_out = []
     for i in range(len(row1)):
         row_out.append(row1[i] ^ row2[i])
@@ -45,12 +85,25 @@ def xor_rows(row1, row2):
 
 
 def swap_rows(row_id1, row_id2, mat):
+    """
+    Swaps two rows with indexes row_id1 and row_id2 in matrix mat.
+    :param row_id1: index of first row
+    :param row_id2: index of second row
+    :param mat: matrix as a 2D array
+    :return: None
+    """
     tmp = mat[row_id1]
     mat[row_id1] = mat[row_id2]
     mat[row_id2] = tmp
 
 
 def get_col(mat, col_id):
+    """
+    Rerturns a column with index col_id from matrix mat.
+    :param mat: matrix as a 2D array
+    :param col_id: index of a column
+    :return: column as an array
+    """
     column = []
     for i in range(len(mat)):
         column.append(mat[i][col_id])
@@ -58,11 +111,25 @@ def get_col(mat, col_id):
 
 
 def instert_col(mat, col_id, col):
+    """
+    Overwrites a column with index col_id.
+    :param mat: matrix as a 2D array
+    :param col_id: index of a column
+    :param col: column
+    :return: None
+    """
     for i in range(len(mat)):
         mat[i][col_id] = col[i]
 
 
 def swap_cols(col_id1, col_id2, mat):
+    """
+    Swaps two columns with indexes col_id1 and col_id2 in matrix mat.
+    :param col_id1: index of first column
+    :param col_id2: index of second column
+    :param mat: matrix as a 2D array
+    :return: None
+    """
     column1 = get_col(mat, col_id1)
     column2 = get_col(mat, col_id2)
     instert_col(mat, col_id1, column2)
@@ -70,6 +137,14 @@ def swap_cols(col_id1, col_id2, mat):
 
 
 def xor_cols(col_id1, col_id2, mat):
+    """
+    Creates a product of xoring columns with indexes col_id1 and col_id2 and overwrites column with index col_id2 with
+    this product.
+    :param col_id1: index of first column
+    :param col_id2: index of second column
+    :param mat: matrix as a 2D array
+    :return: None
+    """
     column1 = get_col(mat, col_id1)
     column2 = get_col(mat, col_id2)
     column_fin = []
@@ -79,6 +154,13 @@ def xor_cols(col_id1, col_id2, mat):
 
 
 def find_row_id_of_pivot(mat, col_index):
+    """
+    Returns an index of a row with a pivot if there is a pivot in column with index col_index. If there is no pivot in
+    this column function returns -1.
+    :param mat: matrix as a 2D array
+    :param col_index: index of a column
+    :return: index or -1
+    """
     rows = len(mat)
     for i in range(rows):
         if mat[i][col_index] == 1:
@@ -87,6 +169,13 @@ def find_row_id_of_pivot(mat, col_index):
 
 
 def find_col_id_of_pivot(mat, row_index):
+    """
+    Returns an index of a column with a pivot if there is a pivot in row with index row_index. If there is no pivot in
+    this row function returns -1.
+    :param mat: matrix as a 2D array
+    :param row_index: index of a row
+    :return: index or -1
+    """
     cols = len(mat[0])
     for j in range(cols):
         if mat[row_index][j] == 1:
@@ -95,6 +184,14 @@ def find_col_id_of_pivot(mat, row_index):
 
 
 def is_pivot_row(row_id, col_id, mat):
+    """
+    Checks if there are any occurences of 1 in a row with index row_id before column with index col_id.
+    Returns True if an element mat[row_it][col_ide] is a pivot. Returns False otherwise.
+    :param row_id: index of a row
+    :param col_id: index of a column
+    :param mat: matrix as a 2D array
+    :return: boolean
+    """
     if mat[row_id][col_id] == 0:
         return False
     for j in range(col_id):
@@ -104,6 +201,14 @@ def is_pivot_row(row_id, col_id, mat):
 
 
 def is_pivot_col(row_id, col_id, mat):
+    """
+    Checks if there are any occurences of 1 in a column with index col_id before row with index row_id.
+    Returns True if an element mat[row_it][col_ide] is a pivot. Returns False otherwise.
+    :param row_id: index of a row
+    :param col_id: index of a column
+    :param mat: matrix as a 2D array
+    :return: boolean
+    """
     if mat[row_id][col_id] == 0:
         return False
     for i in range(row_id):
@@ -113,6 +218,12 @@ def is_pivot_col(row_id, col_id, mat):
 
 
 def create_pivots(mat, i_mat):
+    """
+    Xors rows in mat and i_mat until every row in mat contains a pivot.
+    :param mat: matrix as a 2D array
+    :param i_mat: identity matrix as a 2D array
+    :return: None
+    """
     rows = len(mat)
     cols = len(mat[0])
     for i in range(rows):
@@ -128,6 +239,12 @@ def create_pivots(mat, i_mat):
 
 
 def sort_rows(mat, i_mat):
+    """
+    Swaps rows in mat and i_mat until pivots in mat are sorted in a descending order.
+    :param mat: matrix as a 2D array
+    :param i_mat: identity matrix as a 2D array
+    :return: None
+    """
     rows = len(mat)
     i = 0
     j = 0
@@ -149,6 +266,12 @@ def sort_rows(mat, i_mat):
 
 
 def sub_rows(mat, i_mat):
+    """
+    Xors rows in mat and i_mat until there are only zeros above pivots in mat.
+    :param mat: matrix as a 2D array
+    :param i_mat: identity matrix as a 2D array
+    :return: None
+    """
     rows = len(mat)
     cols = len(mat[0])
     i = 1
@@ -166,12 +289,23 @@ def sub_rows(mat, i_mat):
 
 
 def row_elim(mat, i_mat):
+    """
+    Runs all of the row functions on mat and i_mat.
+    :param mat: matrix as a 2D array
+    :param i_mat: identity matrix as a 2D array
+    :return: None
+    """
     create_pivots(mat, i_mat)
     sort_rows(mat, i_mat)
     sub_rows(mat, i_mat)
 
 
 def swap_cols_blocks_rhss(mrhs):
+    """
+    Swaps columns in every block and its' corresponding RHS until pivots in them are in pure descending order.
+    :param mrhs: instance of MRHS
+    :return: None
+    """
     last_row_id = 0
     for i in range(len(mrhs.block_array)):
         if last_row_id >= mrhs.vector_size:
@@ -193,6 +327,11 @@ def swap_cols_blocks_rhss(mrhs):
 
 
 def xor_cols_blocks_rhss(mrhs):
+    """
+    Xors columns in every block and its' corresponding RHS until there are only zeros after pivots.
+    :param mrhs: instance of MRHS
+    :return: None
+    """
     last_row_id = 0
     for i in range(len(mrhs.block_array)):
         if last_row_id >= mrhs.vector_size:
@@ -213,6 +352,11 @@ def xor_cols_blocks_rhss(mrhs):
 
 
 def gauss_elim_mrhs(mrhs):
+    """
+    Finall function that puts MRHS into an echelon form.
+    :param mrhs: instance of MRHS
+    :return: None
+    """
     matrix = extract_matrix_from_mrhs(mrhs)
     row_elim(matrix, mrhs.ident_matrix)
     update_mrhs_matrix(mrhs, matrix)
@@ -221,20 +365,11 @@ def gauss_elim_mrhs(mrhs):
 
 
 def print_mat(mat):
+    """
+    Helping function for printing matrix
+    :param mat: matrix as a 2D array
+    :return: None
+    """
     for r in mat:
         print(*r)
     print()
-
-
-# test code
-# cmrhs = CTypeMRHS()
-# cmrhs.create_mrhs_variable(8, 4, [6, 4, 4, 4], [4, 1, 1, 7])
-# cmrhs.fill_mrhs_random_sparse_extra(10)
-#
-# mrhs = cmrhs.get_py_mrhs()
-# mrhs.print_mrhs()
-#
-# gauss_elim_mrhs(mrhs)
-# mrhs.print_mrhs()
-#
-# print_mat(mrhs.ident_matrix)
