@@ -328,7 +328,8 @@ def swap_cols_blocks_rhss(mrhs):
 
 def xor_cols_blocks_rhss(mrhs):
     """
-    Xors columns in every block and its' corresponding RHS until there are only zeros after pivots.
+    Xors columns in every block and its' corresponding RHS until there are only zeros after pivots. Computes the number
+    of pivots in each block.
     :param mrhs: instance of MRHS
     :return: None
     """
@@ -339,11 +340,14 @@ def xor_cols_blocks_rhss(mrhs):
         block_i = extract_block_form_mrhs(mrhs, i)
         rhs_i = extract_rhs_from_mrhs(mrhs, i)
         for j in range(len(block_i[0])):
-            if is_pivot_col(last_row_id, j, block_i):
+            if block_i[last_row_id][j] == 1:
+                mrhs.block_array[i].pivots += 1
                 for k in range(j + 1, len(block_i[0])):
                     if block_i[last_row_id][k] == 1:
                         xor_cols(j, k, block_i)
                         xor_cols(j, k, rhs_i)
+            else:
+                break
             last_row_id += 1
             if last_row_id >= mrhs.vector_size:
                 break
