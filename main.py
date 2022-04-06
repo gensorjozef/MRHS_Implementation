@@ -36,10 +36,12 @@ if __name__ == '__main__':
     # cmrhs.fill_mrhs_random_sparse()
     # cmrhs.get_py_mrhs().print_mrhs()
 
-    cmrhs.create_mrhs_fixed(6, 2, 3, 4)
-    cmrhs.fill_mrhs_random_sparse_extra(2)
-    report = cmrhs.solve(5000)
+    cmrhs.create_mrhs_fixed(20, 7, 4, 4)
+    cmrhs.fill_mrhs_random()
+    cmrhs.fill_mrhs_random()
+    report = cmrhs.solve(10_000,algorithm="rz",save_file="results.txt",report_solutions=0)
     report.print_results()
+    #print(i for i in report.get_solution())
     mrhs = cmrhs.get_py_mrhs()
 
     mrhs.print_mrhs()

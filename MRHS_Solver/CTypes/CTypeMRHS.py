@@ -96,14 +96,15 @@ class CTypeMRHS:
 
         p_results: POINTER(c_longlong) = (POINTER(c_longlong))()  # Null pointer
 
+        res = 0
         start_time = time()
         if algorithm_id == 0:
-            self.solve_hc(maxt, pCount, pRestarts, p_results, save_file, save_results)
+            res = self.solve_hc(maxt, pCount, pRestarts, p_results, save_file, save_results)
         elif algorithm_id == 1:
-            self.solve_rz(maxt, pCount, pRestarts, p_results, save_file, save_results)
+            res = self.solve_rz(maxt, pCount, pRestarts, p_results, save_file, save_results)
 
         run_time = time() - start_time
-        return SolverReport(p_results, run_time, pRestarts, pCount, save_results)
+        return SolverReport(p_results, run_time, pRestarts, res, save_results)
 
     def solve_rz(self, maxt, pCount, pRestarts, p_results, save_file: str = None, save_results: int = 0):
         res = 0
@@ -123,6 +124,7 @@ class CTypeMRHS:
                                                      p_results,
                                                      c_int(save_results),
                                                      create_string_buffer(("{}".format(save_file)).encode("ASCII")))
+        return res
 
     def solve_hc(self, maxt, pCount, pRestarts, p_results, save_file: str = None, save_results: int = 0):
         res = 0
@@ -142,6 +144,7 @@ class CTypeMRHS:
                                                      p_results,
                                                      c_int(save_results),
                                                      create_string_buffer(("{}".format(save_file)).encode("ASCII")))
+        return res
 
     def create_mrhs_fixed(self, nrows: int, nblocks: int, blocksize: int, rhscount: int):
         if self._dll_allocated:
