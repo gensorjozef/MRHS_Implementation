@@ -6,24 +6,36 @@ import random
 
 class MRHS:
 
-    #def __init__(self, vector_size):
-      #  self.block_array = []
-      #  self.vector_size = vector_size
+    # def __init__(self, vector_size):
+    #  self.block_array = []
+    #  self.vector_size = vector_size
     def __init__(self, vectors):
-        self.block_array =[]
+        self.block_array = []
         for vector in vectors:
             bm = BlockMatrix()
             bm.initWithMatrix(vector)
             self.block_array.append(bm)
         self.vector_size = len(vectors[0][0])
+        self.ident_matrix = self.create_indentity_mat()
 
     def initWithMatrix(self, vectors):
         for vector in vectors:
-            bm = BlockMatrix(0,0,[])
+            bm = BlockMatrix(0, 0, [])
             bm.initWithMatrix(vector)
             self.block_array = bm
         self.vector_size = len(vectors[0][0])
 
+    def create_indentity_mat(self):
+        i_mat = []
+        for i in range(self.vector_size):
+            row = []
+            for j in range(self.vector_size):
+                if i == j:
+                    row.append(1)
+                else:
+                    row.append(0)
+            i_mat.append(row)
+        return i_mat
 
     def generate_random_block_array(self, block_count, block_size, rhs_fill, seed=1891499):
         random.seed(seed)
@@ -32,7 +44,7 @@ class MRHS:
             rhs = RHS(block_size, rhs_count, ran=True)
             self.block_array.append(BlockMatrix(block_size, self.vector_size, rhs, ran=True))
 
-    def generate_random_block_array(self,blocks, rhs_fill, seed=1891499): #blocks = [4,1,2,3]
+    def generate_random_block_array(self, blocks, rhs_fill, seed=1891499):  # blocks = [4,1,2,3]
         random.seed(seed)
         for block in blocks:
             rhs_count = int((block ** 2) * rhs_fill)
@@ -71,8 +83,7 @@ class MRHS:
                 yield vec
         yield None
 
-    #1
-
+    # 1
 
     def find_all_solutions(self):
         solutions = []
@@ -106,10 +117,3 @@ class MRHS:
                 return False
 
         return True
-
-
-
-
-
-
-
