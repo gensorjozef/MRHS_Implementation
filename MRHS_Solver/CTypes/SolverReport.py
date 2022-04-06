@@ -4,21 +4,21 @@ class SolverReport:
     def __init__(self, results: POINTER(c_longlong),
                  run_time: float,
                  xors: POINTER(c_longlong),
-                 solutions_count: POINTER(c_longlong),
+                 solutions_count: int,
                  save_results: int = 0):
         self.results: list[int] = []
 
         save_count = 0
-        if save_results < solutions_count.contents.value:
+        if save_results < solutions_count:
             save_count = save_results
         else:
-            save_count = solutions_count.contents.value
+            save_count = solutions_count
         if save_count > 0:
             self.results = [results[i].value for i in range(save_count)]
 
         self.run_time: float = run_time
         self.xor_count: int = xors.contents.value
-        self.found_solutions: int = solutions_count.contents.value
+        self.found_solutions: int = solutions_count
 
     def print_results(self):
         print("Found solutions: {}".format(self.found_solutions))
