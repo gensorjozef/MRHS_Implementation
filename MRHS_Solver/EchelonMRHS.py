@@ -1,12 +1,11 @@
-from typing import *
 from MRHS_Solver import MRHS
 
 
 def _extract_matrix_from_mrhs(mrhs: MRHS) -> list[list[int]]:
     """
-    Extracts the matrix from MRHS object and returns it as a 2D array.
+    Extracts the matrix from MRHS object and returns it as a 2D list.
     :param mrhs: instance of class MRHS
-    :return: matrix as a 2D array
+    :return: matrix as a 2D list
     """
     mat = []
     for i in range(mrhs.vector_size):
@@ -22,7 +21,7 @@ def _update_mrhs_matrix(mrhs: MRHS, mat: list[list[int]]) -> None:
     """
     Overwrites the matrix in MRHS object.
     :param mrhs: instance of class MRHS
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :return: None
     """
     for i in range(mrhs.vector_size):
@@ -35,10 +34,10 @@ def _update_mrhs_matrix(mrhs: MRHS, mat: list[list[int]]) -> None:
 
 def _extract_block_form_mrhs(mrhs: MRHS, block_num: int) -> list[list[int]]:
     """
-    Returns a block with index block_num from MRHS object as a 2D array.
+    Returns a block with index block_num from MRHS object as a 2D list.
     :param mrhs: instance of class MRHS
     :param block_num: index of a block
-    :return: block as a 2D array
+    :return: block as a 2D list
     """
     return mrhs.block_array[block_num].matrix
 
@@ -48,7 +47,7 @@ def _update_mrhs_block(mrhs: MRHS, block_num: int, block: list[list[int]]) -> No
     Overwrites a block with index block_num in MRHS object.
     :param mrhs: instance of class MRHS
     :param block_num: index of a block
-    :param block: block as a 2D array
+    :param block: block as a 2D list
     :return: None
     """
     mrhs.block_array[block_num].matrix = block
@@ -56,10 +55,10 @@ def _update_mrhs_block(mrhs: MRHS, block_num: int, block: list[list[int]]) -> No
 
 def _extract_rhs_from_mrhs(mrhs: MRHS, rhs_num: int) -> list[list[int]]:
     """
-    Returns a RHS with index rhs_num from MRHS object as a 2D array.
+    Returns a RHS with index rhs_num from MRHS object as a 2D list.
     :param mrhs: instance of class MRHS
     :param rhs_num: index of a RHS
-    :return: RHS as a 2D array
+    :return: RHS as a 2D list
     """
     return mrhs.block_array[rhs_num].rhsMatrix.matrix
 
@@ -69,7 +68,7 @@ def _update_mrhs_rhs(mrhs: MRHS, rhs_num: int, rhs: list[list[int]]) -> None:
     Overwrites a RHS with index rhs_num in MRHS object.
     :param mrhs: instance of class MRHS
     :param rhs_num: index of a RHS
-    :param rhs: RHS as a 2D array
+    :param rhs: RHS as a 2D list
     :return: None
     """
     mrhs.block_array[rhs_num].rhsMatrix.matrix = rhs
@@ -77,10 +76,10 @@ def _update_mrhs_rhs(mrhs: MRHS, rhs_num: int, rhs: list[list[int]]) -> None:
 
 def _xor_rows(row1: list[int], row2: list[int]) -> list[int]:
     """
-    Returns array which is a product of xoring arrays row1 and row2.
-    :param row1: array
-    :param row2: array
-    :return: array
+    Returns list which is a product of xoring lists row1 and row2.
+    :param row1: first row as a list
+    :param row2: second row as a list
+    :return: list
     """
     row_out = []
     for i in range(len(row1)):
@@ -93,7 +92,7 @@ def _swap_rows(row_id1: int, row_id2: int, mat: list[list[int]]) -> None:
     Swaps two rows with indexes row_id1 and row_id2 in matrix mat.
     :param row_id1: index of first row
     :param row_id2: index of second row
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :return: None
     """
     tmp = mat[row_id1]
@@ -104,9 +103,9 @@ def _swap_rows(row_id1: int, row_id2: int, mat: list[list[int]]) -> None:
 def _get_col(mat: list[list[int]], col_id: int) -> list[int]:
     """
     Rerturns a column with index col_id from matrix mat.
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :param col_id: index of a column
-    :return: column as an array
+    :return: column as a list
     """
     column = []
     for i in range(len(mat)):
@@ -117,9 +116,9 @@ def _get_col(mat: list[list[int]], col_id: int) -> list[int]:
 def _instert_col(mat: list[list[int]], col_id: int, col: list[int]) -> None:
     """
     Overwrites a column with index col_id.
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :param col_id: index of a column
-    :param col: column
+    :param col: column as a list
     :return: None
     """
     for i in range(len(mat)):
@@ -131,7 +130,7 @@ def _swap_cols(col_id1: int, col_id2: int, mat: list[list[int]]) -> None:
     Swaps two columns with indexes col_id1 and col_id2 in matrix mat.
     :param col_id1: index of first column
     :param col_id2: index of second column
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :return: None
     """
     column1 = _get_col(mat, col_id1)
@@ -146,7 +145,7 @@ def _xor_cols(col_id1: int, col_id2: int, mat: list[list[int]]) -> None:
     this product.
     :param col_id1: index of first column
     :param col_id2: index of second column
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :return: None
     """
     column1 = _get_col(mat, col_id1)
@@ -161,7 +160,7 @@ def _find_row_id_of_pivot(mat: list[list[int]], col_index: int) -> int:
     """
     Returns an index of a row with a pivot if there is a pivot in column with index col_index. If there is no pivot in
     this column function returns -1.
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :param col_index: index of a column
     :return: index or -1
     """
@@ -176,7 +175,7 @@ def _find_col_id_of_pivot(mat: list[list[int]], row_index: int) -> int:
     """
     Returns an index of a column with a pivot if there is a pivot in row with index row_index. If there is no pivot in
     this row function returns -1.
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :param row_index: index of a row
     :return: index or -1
     """
@@ -193,7 +192,7 @@ def _is_pivot_row(row_id: int, col_id: int, mat: list[list[int]]) -> bool:
     Returns True if an element mat[row_it][col_ide] is a pivot. Returns False otherwise.
     :param row_id: index of a row
     :param col_id: index of a column
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :return: boolean
     """
     if mat[row_id][col_id] == 0:
@@ -210,7 +209,7 @@ def _is_pivot_col(row_id: int, col_id: int, mat: list[list[int]]) -> bool:
     Returns True if an element mat[row_it][col_ide] is a pivot. Returns False otherwise.
     :param row_id: index of a row
     :param col_id: index of a column
-    :param mat: matrix as a 2D array
+    :param mat: matrix as a 2D list
     :return: boolean
     """
     if mat[row_id][col_id] == 0:
@@ -224,8 +223,8 @@ def _is_pivot_col(row_id: int, col_id: int, mat: list[list[int]]) -> bool:
 def _create_pivots(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     """
     Xors rows in mat and i_mat until every row in mat contains a pivot.
-    :param mat: matrix as a 2D array
-    :param i_mat: identity matrix as a 2D array
+    :param mat: matrix as a 2D list
+    :param i_mat: identity matrix as a 2D list
     :return: None
     """
     rows = len(mat)
@@ -245,8 +244,8 @@ def _create_pivots(mat: list[list[int]], i_mat: list[list[int]]) -> None:
 def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     """
     Swaps rows in mat and i_mat until pivots in mat are sorted in a descending order.
-    :param mat: matrix as a 2D array
-    :param i_mat: identity matrix as a 2D array
+    :param mat: matrix as a 2D list
+    :param i_mat: identity matrix as a 2D list
     :return: None
     """
     rows = len(mat)
@@ -272,8 +271,8 @@ def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
 def _sub_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     """
     Xors rows in mat and i_mat until there are only zeros above pivots in mat.
-    :param mat: matrix as a 2D array
-    :param i_mat: identity matrix as a 2D array
+    :param mat: matrix as a 2D list
+    :param i_mat: identity matrix as a 2D list
     :return: None
     """
     rows = len(mat)
@@ -295,8 +294,8 @@ def _sub_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
 def _row_elim(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     """
     Runs all of the row functions on mat and i_mat.
-    :param mat: matrix as a 2D array
-    :param i_mat: identity matrix as a 2D array
+    :param mat: matrix as a 2D list
+    :param i_mat: identity matrix as a 2D list
     :return: None
     """
     _create_pivots(mat, i_mat)
@@ -359,7 +358,7 @@ def _xor_cols_blocks_rhss(mrhs: MRHS) -> None:
         _update_mrhs_rhs(mrhs, i, rhs_i)
 
 
-def gauss_elim_mrhs(mrhs: MRHS) -> None:
+def create_echelon_mrhs(mrhs: MRHS) -> None:
     """
     Finall function that puts MRHS into an echelon form.
     :param mrhs: instance of MRHS
