@@ -216,7 +216,7 @@ def find_solution_final(mrhs):
     final_sol = []
     all_sols = []
     recursive_solution(part_sol, final_sol, 0, mrhs, all_sols)
-    print(f'Solutions found recursively: {all_sols}')
+    print(f'Solutions found recursively: {len(all_sols)}')
     return all_sols
 
 
