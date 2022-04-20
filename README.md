@@ -43,26 +43,36 @@ We are a group of developers engaged in the development of MRHS equations and it
 ##### Load MRHS from file
 
 ```python
-mat = LoadFile.load_file("input.txt")
-mrhs = MRHS_Solver.MRHS(mat)
+from MRHS_Solver import LoadFile as lf
+from MRHS_Solver import MRHS as ms
+
+mat = lf.load_file("input.txt")
+mrhs = ms.MRHS(mat)
 mrhs.print_mrhs()
 ```
 
 ##### Create MRHS and fill it with random
 
 ```python
+from MRHS_Solver import MRHS as ms
 vectors = [
-  [
-  [[1,0,1],[1,1,1]],
-  [[0,1,1],[1,0,0]]
-  ],
-  [1,0],[1,1]]
-mrhs = MRHS_Solver.MRHS(vectors)
+        [
+            [[1, 0, 1], [1, 1, 1]],
+            [[0, 1, 1], [1, 0, 0]]
+        ],
+        [
+            [[1, 0], [1, 1]],
+            [[0, 0], [0, 1]]
+        ]
+    ]
+mrhs = ms.MRHS(vectors)
 mrhs.fill_random()
 ```
 
 ##### Create Ctype MRHS and fill it with random
 ```python
+from MRHS_Solver.CTypes.CTypeMRHS import CTypeMRHS
+
 cmrhs = CTypeMRHS()
 cmrhs.create_mrhs_fixed(12, 6, 3, 4)
 cmrhs.fill_mrhs_random()
@@ -71,6 +81,21 @@ mrhs = cmrhs.get_py_mrhs()
 ##### Solve MRHS using python with echelon reduction
 
 ```python
+from MRHS_Solver import MRHS as ms
+from MRHS_Solver.SolveMRHS import find_all_solutions_recursively
+from MRHS_Solver.EchelonMRHS import create_echelon_mrhs
+
+vectors = [
+        [
+            [[1, 0, 1], [1, 1, 1]], #Block
+            [[0, 1, 1], [1, 0, 0]]  #RHS
+        ],
+        [
+            [[1, 0], [1, 1]], #BLOCK
+            [[0, 0], [0, 1]]  #RHS
+        ]
+    ]
+mrhs = ms.MRHS(vectors)
 create_echelon_mrhs(mrhs)
 sols = find_all_solutions_recursively(mrhs)
 ```
@@ -78,7 +103,9 @@ sols = find_all_solutions_recursively(mrhs)
 ##### Generate MRHS and solve using C version
 
 ```python
-cmrhs = MRHS_Solver.CTypes.CTypeMRHS()
+from MRHS_Solver.CTypes.CTypeMRHS import CTypeMRHS
+
+cmrhs = CTypeMRHS()
 
 cmrhs.create_mrhs_fixed(12, 6, 3, 4)
 cmrhs.fill_mrhs_random()

@@ -1,3 +1,37 @@
+from scanf import scanf
+
+def load_file_scanf(file_name):
+    f = open(file_name,'r')
+    s = f.read()
+    f.close()
+    n = scanf("%i")
+    m = scanf("%i")
+    l = []
+    k = []
+    for i in range(m):
+        l.append(scanf("%i"))
+        k.append(scanf("%i"))
+
+    mat = []
+
+    for i in range(n):
+        block_num = l[i]
+        rhs_num = k[i]
+        block = [[[0]*block_num for k in range(m)],[[[0]*block_num for k in range(rhs_num)]]]
+        mat.append(block)
+
+    for i in range(m):
+        for j in range(n):
+            nums = scanf("%s")
+            for h, number in enumerate(nums):
+                mat[j][0][i][h] = int(number)
+
+    #TODO Nacitat RHS
+
+
+
+
+
 def load_file(file_name):
     """
     Returns 2D array where index corresponds to one block that contains two nested fields => block line, solutions
