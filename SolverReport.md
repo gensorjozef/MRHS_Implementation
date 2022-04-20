@@ -17,7 +17,7 @@
 
 - [```print_results()```](#print-results)
 - [```get_solution() -> int```](#get-solution)
-
+- [```load_file(string: filename) -> list[int]```](#get-solution)
 ---
 
 ### Print Results
@@ -36,3 +36,12 @@
   - Get next solution from generator
 - Return:
   - Returns int number of solution, None if there is none or was last  
+
+### Load File
+
+```load_file(string: filename) -> list[int]```
+
+- Description:
+  - Transform matrix from file to mrhs form
+- Return:
+  - Returns 2D array, where index corresponds to one block that contains two nested fields => block line, solutions
