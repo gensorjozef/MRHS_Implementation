@@ -1,4 +1,6 @@
 from MRHS_Solver.BlockMatrix import *
+from MRHS_Solver.EchelonMRHS import _convert_to_echelon_mrhs
+from MRHS_Solver.SolveMRHS import _find_all_solutions_recursively, _find_all_solutions_brute_force
 from MRHS_Solver.Utils import bitfield
 from MRHS_Solver.RHS import *
 import random
@@ -20,16 +22,16 @@ class MRHS:
             bm._init_with_matrix(vector)
             self.block_array.append(bm)
         self.vector_size = len(vectors[0][0])
-        self.ident_matrix = self.create_indentity_mat()
+        self.ident_matrix = self._create_indentity_mat()
 
-    def fill_random(self):
+    def _fill_random(self):
         """
         Fills matrix with random values
         """
         for bm in self.block_array:
             bm.fill_random()
 
-    def create_indentity_mat(self):
+    def _create_indentity_mat(self):
         """
         Creates identity matrix
         :return: identity matrix (2D array)
@@ -44,7 +46,6 @@ class MRHS:
                     row.append(0)
             i_mat.append(row)
         return i_mat
-
 
     def print_mrhs(self):
         """
@@ -71,3 +72,23 @@ class MRHS:
             print()
             rhs_id += 1
 
+    def solve_recursive(self):
+        """
+        Returns all solutions using a recursive function.
+        :return: all solutions as a 2D list
+        """
+        return _find_all_solutions_recursively(self)
+
+    def solve_brute_force(self):
+        """
+        Returns all solutions using brute force.
+        :return: all solutions as a 2D list
+        """
+        return _find_all_solutions_brute_force(self)
+
+    def convert_to_echelon(self):
+        """
+        Converts MRHS to echelon form.
+        :return: None
+        """
+        _convert_to_echelon_mrhs(self)
