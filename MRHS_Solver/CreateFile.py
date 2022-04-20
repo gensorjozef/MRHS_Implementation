@@ -1,4 +1,7 @@
-def write_mrhs_to_file(mrhs, file_name):
+from MRHS_Solver import MRHS
+
+
+def write_mrhs_to_file(mrhs: MRHS, file_name: str) -> None:
     """
     Writes MRHS into a file.
     :param mrhs: instance of class MRHS

@@ -30,6 +30,9 @@ We are a group of developers engaged in the development of MRHS equations and it
 - [**SolveMRHS**](SolveMRHS.md)
   - Collection of functions for solving MRHS
 
+- [**CreateFile**](CreateFile.md)
+  - Collection of functions for writing MRHS into a text file
+
 
 
 
