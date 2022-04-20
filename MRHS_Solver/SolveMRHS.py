@@ -1,9 +1,13 @@
-def append_vectors(vec1, vec2):
+from MRHS_Solver import MRHS
+from typing import *
+
+
+def _append_vectors(vec1: list[int], vec2: list[int]) -> list[int]:
     """
     Appends vectors vec1 and vec2 in left to right order.
-    :param vec1: array
-    :param vec2: array
-    :return: array
+    :param vec1: vector as a list
+    :param vec2: vector as a list
+    :return: list
     """
     final_vec = []
     final_vec.extend(vec1)
@@ -11,11 +15,11 @@ def append_vectors(vec1, vec2):
     return final_vec
 
 
-def generate_vectors(vec_len):
+def _generate_vectors(vec_len: int) -> list[list[int]]:
     """
     Generates all posible vectors with length of vec_len. Returns these vectors.
     :param vec_len: length of vectors
-    :return: array of arrays
+    :return: vectors as a 2D list
     """
     vec_num = 2 ** vec_len
     vectors = []
@@ -27,13 +31,13 @@ def generate_vectors(vec_len):
     return vectors
 
 
-def brute_force_solution(mrhs):
+def _brute_force_solution(mrhs: MRHS) -> list[list[int]]:
     """
     Finds solutions to MRHS via brute forcing all possible vectors. Returns these solutions.
     :param mrhs: instance of MRHS
-    :return: array of arrays
+    :return: vectors as a 2D list
     """
-    test_vecs = generate_vectors(mrhs.vector_size)
+    test_vecs = _generate_vectors(mrhs.vector_size)
     all_solutions = []
     for vec in test_vecs:
         result_vec = []
@@ -57,13 +61,13 @@ def brute_force_solution(mrhs):
     return all_solutions
 
 
-def get_partial_rhs(rhs_len, block_num, mrhs):
+def _get_partial_rhs(rhs_len: int, block_num: int, mrhs: MRHS) -> list[list[int]]:
     """
     Returns array with parts of RHS with length of rhs_len.
     :param rhs_len: length of RHS
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :return: array of arrays
+    :return: vectors as a 2D list
     """
     vectors = []
     for rhs in mrhs.block_array[block_num].rhsMatrix.matrix:
@@ -73,13 +77,13 @@ def get_partial_rhs(rhs_len, block_num, mrhs):
     return vectors
 
 
-def multiply_vec_block(vec, block_num, mrhs):
+def _multiply_vec_block(vec: list[int], block_num: int, mrhs: MRHS) -> list[int]:
     """
     Multiplyes vector with block. Returns the product of this multiplication.
-    :param vec: array
+    :param vec: vector as a list
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :return: array
+    :return: vector as a list
     """
     result_vec = []
     for j in range(len(mrhs.block_array[block_num].matrix[0])):
@@ -91,27 +95,27 @@ def multiply_vec_block(vec, block_num, mrhs):
     return result_vec
 
 
-def is_solution(vec, block_num, mrhs):
+def _is_solution(vec: list[int], block_num: int, mrhs: MRHS) -> bool:
     """
     Returns True if vec is in RHS. Returns False otherwise.
-    :param vec: array
+    :param vec: vector as a list
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :return: boolean
+    :return: bool
     """
     if mrhs.block_array[block_num].rhsMatrix.matrix.count(vec) > 0:
         return True
     return False
 
 
-def multiply_vec_block_v2(rhs_len, vec, block_num, mrhs):
+def _multiply_vec_block_v2(rhs_len: int, vec: list[int], block_num: int, mrhs: MRHS) -> list[int]:
     """
     Multiplies vector with block from offset of rhs_len. Returns the product of this multiplication.
     :param rhs_len: length of RHS
-    :param vec: array
+    :param vec: vector as a list
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :return: array
+    :return: vector as a list
     """
     result_vec = []
     for j in range(rhs_len, len(mrhs.block_array[block_num].matrix[0])):
@@ -123,35 +127,35 @@ def multiply_vec_block_v2(rhs_len, vec, block_num, mrhs):
     return result_vec
 
 
-def is_solution_v2(partial_rhs, vec, block_num, mrhs):
+def _is_solution_v2(partial_rhs: list[int], vec: list[int], block_num: int, mrhs: MRHS) -> bool:
     """
     Connects partial_rhs and vec and checks if that product is in RHS.
-    :param partial_rhs: array
-    :param vec: array
+    :param partial_rhs: vector as a list
+    :param vec: vector as a list
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :return: boolean
+    :return: bool
     """
-    connected = append_vectors(partial_rhs, vec)
+    connected = _append_vectors(partial_rhs, vec)
     if mrhs.block_array[block_num].rhsMatrix.matrix.count(connected) > 0:
         return True
     return False
 
 
-def get_vectors(part_sol, block_num, mrhs):
+def _get_vectors(part_sol: list[int], block_num: int, mrhs: MRHS) -> list[list[int]]:
     """
     If block contains only pivots, function appends all RHS to part_sol and returns these new vectors. If there is at
     least one pivot, function appends part of all RHS with length of number of pivots to part_sol and multipies these
     products with part of block. If parts of RHS appended with the products of thier multiplication are in RHS, function
     returns these new vectors. Otherwise, when there are no pivots in block, function multipies part_sol with block and
     checks if that product is in RHS. If it is then it returns these vectors.
-    :param part_sol: array
+    :param part_sol: vector as a list
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :return: array of arrays
+    :return: vectors as a 2D list
     """
     offset = len(mrhs.block_array[block_num].matrix[0]) - mrhs.block_array[block_num].pivots
-    rhs_len = len(mrhs.block_array[block_num].matrix[0]) - offset
+    rhs_len = mrhs.block_array[block_num].pivots
     final_vectors = []
 
     if offset == 0:
@@ -161,37 +165,38 @@ def get_vectors(part_sol, block_num, mrhs):
             final_vectors.append(tmp_sol)
 
     elif rhs_len > 0:
-        vectors = get_partial_rhs(rhs_len, block_num, mrhs)
+        vectors = _get_partial_rhs(rhs_len, block_num, mrhs)
         for partial_rhs in vectors:
             tmp_sol = part_sol.copy()
             tmp_sol.extend(partial_rhs)
 
-            result_vec = multiply_vec_block_v2(rhs_len, tmp_sol, block_num, mrhs)
-            if is_solution_v2(partial_rhs, result_vec, block_num, mrhs) and final_vectors.count(tmp_sol) == 0:
+            result_vec = _multiply_vec_block_v2(rhs_len, tmp_sol, block_num, mrhs)
+            if _is_solution_v2(partial_rhs, result_vec, block_num, mrhs) and final_vectors.count(tmp_sol) == 0:
                 final_vectors.append(tmp_sol)
 
     else:
-        result_vec = multiply_vec_block(part_sol, block_num, mrhs)
-        if is_solution(result_vec, block_num, mrhs):
+        result_vec = _multiply_vec_block(part_sol, block_num, mrhs)
+        if _is_solution(result_vec, block_num, mrhs):
             final_vectors.append(part_sol)
 
     return final_vectors
 
 
-def recursive_solution(part_sol, final_sol, block_num, mrhs, all_sols):
+def _recursive_solution(part_sol: list[int], final_sol: list[int], block_num: int, mrhs: MRHS,
+                        all_sols: list[list[int]]) -> Optional[list[int]]:
     """
     Firstly, function creates new possible partial solutions. If there no possible partial solutions, functions returns
     None. Otherwise, for each of these new partial solutions, function updates partial solution to this new value and
     calls itself with incremented block id. If the block number is at its maximum function updates final solution,
     appends it to all solutions.
-    :param part_sol: array
-    :param final_sol: array
+    :param part_sol: vector as a list
+    :param final_sol: vector as a list
     :param block_num: id of block in MRHS
     :param mrhs: instance of MRHS
-    :param all_sols: array of arrays
-    :return: array or None
+    :param all_sols: vectors as a 2D list
+    :return: vector as a list or None
     """
-    vectors = get_vectors(part_sol, block_num, mrhs)
+    vectors = _get_vectors(part_sol, block_num, mrhs)
     if len(vectors) == 0:
         return None
     else:
@@ -201,31 +206,32 @@ def recursive_solution(part_sol, final_sol, block_num, mrhs, all_sols):
                 all_sols.append(final_sol)
             else:
                 part_sol = v
-                final_sol = recursive_solution(part_sol, final_sol, block_num + 1, mrhs, all_sols)
+                final_sol = _recursive_solution(part_sol, final_sol, block_num + 1, mrhs, all_sols)
 
         return final_sol
 
 
-def find_solution_final(mrhs):
+def _find_solution_final(mrhs: MRHS) -> list[list[int]]:
     """
     Initializes inputs for function recursive_solution and calls it.
     :param mrhs: instance of MRHS
-    :return: array of all possible solutions for MRHS
+    :return: vectors as a 2D list
     """
     part_sol = []
     final_sol = []
     all_sols = []
-    recursive_solution(part_sol, final_sol, 0, mrhs, all_sols)
-    print(f'Solutions found recursively: {len(all_sols)}')
+    _recursive_solution(part_sol, final_sol, 0, mrhs, all_sols)
+    # print(f'Solutions found recursively: {all_sols}')
+
     return all_sols
 
 
-def transform_solution(solution, mrhs):
+def _transform_solution(solution: list[int], mrhs: MRHS) -> list[int]:
     """
     Tranforms solution by multiplying it with identity matrix from MRHS to get solution for original MRHS.
-    :param solution: array as a solution to MRHS
+    :param solution: vector as a list
     :param mrhs: instance of MRHS
-    :return: array as a transformed solution to MRHS
+    :return: vector as a list
     """
     transformed = []
     for i in range(len(solution)):
@@ -234,14 +240,46 @@ def transform_solution(solution, mrhs):
             out = solution[j] * mrhs.ident_matrix[j][i]
             num += out
         transformed.append(num % 2)
-    print(f'Tranformed solution: {transformed}')
+    # print(f'Transformed solution: {transformed}')
     return transformed
 
 
-def check_solution(solution, mrhs):
+def find_all_solutions_recursively(echelon_mrhs: MRHS, original_mrhs: MRHS) -> list[list[int]]:
+    """
+    Finds all solutions to echelonized MRHS using recursive function and transforms them using identity matrix from
+    original MRHS.
+    :param echelon_mrhs: instance of echelonized MRHS
+    :param original_mrhs: instance of original MRHS
+    :return: vectors as a 2D list
+    """
+    original_sols = _find_solution_final(echelon_mrhs)
+    transformed_sols = []
+    for sol in original_sols:
+        transformed_sol = _transform_solution(sol, original_mrhs)
+        transformed_sols.append(transformed_sol)
+    return transformed_sols
+
+
+def find_all_solutions_brute_force(echelon_mrhs: MRHS, original_mrhs: MRHS) -> list[list[int]]:
+    """
+    Finds all solutions to echelonized MRHS using brute force function and transforms them using identity matrix from
+    original MRHS.
+    :param echelon_mrhs: instance of echelonized MRHS
+    :param original_mrhs: instance of original MRHS
+    :return: vectors as a 2D list
+    """
+    original_sols = _brute_force_solution(echelon_mrhs)
+    transformed_sols = []
+    for sol in original_sols:
+        transformed_sol = _transform_solution(sol, original_mrhs)
+        transformed_sols.append(transformed_sol)
+    return transformed_sols
+
+
+def _check_solution(solution: list[int], mrhs: MRHS) -> bool:
     """
     Returns True if solution is valid, returns False otherwise.
-    :param solution: array as a solution to MRHS
+    :param solution: vector as a list
     :param mrhs: instance of MRHS
     :return: boolean
     """
@@ -254,8 +292,9 @@ def check_solution(solution, mrhs):
                 num += out
             part_res.append(num % 2)
         if block.rhsMatrix.matrix.count(part_res) < 1:
-            print(f'Solution "{solution}" is not valid.')
+            # print(f'Solution "{solution}" is not valid.')
             return False
 
-    print(f'Solution "{solution}" is valid.')
+    # print(f'Solution "{solution}" is valid.')
     return True
+
