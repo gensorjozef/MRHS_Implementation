@@ -1,5 +1,5 @@
 from MRHS_Solver.BlockMatrix import *
-from MRHS_Solver.Controllers import *
+from MRHS_Solver.Controllers import bitfield
 from MRHS_Solver.RHS import *
 import random
 
@@ -37,7 +37,7 @@ class MRHS:
             i_mat.append(row)
         return i_mat
 
-    def generate_random_block_array(self, block_count, block_size, rhs_fill, seed=1891499):
+    def generate_random_block_array(self, block_count: int, block_size, rhs_fill, seed=1891499):
         random.seed(seed)
         rhs_count = int((block_size ** 2) * rhs_fill)
         for n in range(block_count):
@@ -77,7 +77,7 @@ class MRHS:
         print("Testing {} vectors...".format(num))
         for i in range(num):
             if self.solve_with_vector(i):
-                vec = Controllers.bitfield(i)
+                vec = bitfield(i)
                 for j in range(self.vector_size - len(vec)):
                     vec.insert(0, 0)
                 yield vec
@@ -99,7 +99,7 @@ class MRHS:
         return solutions
 
     def solve_with_vector(self, vector):
-        vector_array = Controllers.bitfield(vector)
+        vector_array = bitfield(vector)
         vector_array_fin = vector_array.copy()
         for i in range(self.vector_size - len(vector_array)):
             vector_array_fin.insert(0, 0)
