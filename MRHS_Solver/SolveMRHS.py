@@ -222,6 +222,7 @@ def _find_solution_final(mrhs: MRHS) -> list[list[int]]:
     all_sols = []
     _recursive_solution(part_sol, final_sol, 0, mrhs, all_sols)
     # print(f'Solutions found recursively: {all_sols}')
+
     return all_sols
 
 
