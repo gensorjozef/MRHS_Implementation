@@ -25,7 +25,7 @@ class SolverReport:
         print("Xors used: {}".format(self.xor_count))
         print("Runtime (s): {}".format(self.run_time))
 
-    def get_solution(self) -> int:
+    def get_solution(self):
         if len(self.results) <= 0:
             return None
 

@@ -1,17 +1,23 @@
-from MRHS_Solver.Controllers import *
+from MRHS_Solver.Utils import *
 
 class RHS:
-    #def __init__(self, vector_len, vector_count, ran=False):
-      #  self.matrix = initialise_2d_matrix(vector_len, vector_count)
-      #  if ran:
-      #      self.matrix = fill_2d_matrix_random(self.matrix)
-      #  print("Created RHS")
-
+    """
+    Class for RHS of BLockMatrices
+    """
     def __int__(self,vectors):
+        """
+        Initialzie RHS with vectors
+        """
         self.matrix = vectors
 
-    def initWithVectors(self,vectors):
+    def init_with_vectors(self, vectors):
         self.matrix = vectors
+
+    def fill_random(self):
+        """
+        Fills random RHS
+        """
+        fill_2d_matrix_random(self.matrix)
 
     def contains_duplicate(self, vec):
         count = 0
@@ -48,6 +54,10 @@ class RHS:
         return False
 
     def print_row(self, row_id):
+        """
+        Prints row of RHS
+        :param row_id: rowID
+        """
         for row_byte in self.matrix[row_id]:
             print(row_byte, end='')
 
