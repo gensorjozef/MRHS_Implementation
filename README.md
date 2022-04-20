@@ -24,12 +24,8 @@ We are a group of developers engaged in the development of MRHS equations and it
 ---
 
 #### MRHS_Solver
-
-- [**EchelonMRHS**](EchelonMRHS.md)
-  - Collection of functions for creating echelon form of MRHS
-
-- [**SolveMRHS**](SolveMRHS.md)
-  - Collection of functions for solving MRHS
+- [**MRHS**](MRHS.md)
+  - Class MRHS
 
 - [**CreateFile**](CreateFile.md)
   - Collection of functions for writing MRHS into a text file
