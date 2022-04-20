@@ -10,7 +10,7 @@ class CTypeMRHS:
 
     def __init__(self, mrhs: MRHS = None, callback = None):
         self._dll_allocated = False
-        if (mrhs != None):
+        if mrhs is not None:
             self.set_py_mrhs(mrhs)
         else:
             self._py_system = None
