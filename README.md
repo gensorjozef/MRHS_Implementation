@@ -3,7 +3,6 @@ We are a group of developers engaged in the development of MRHS equations and it
 
 ## Usage 
 
-### Classes 
 
 ---
 
@@ -17,6 +16,8 @@ We are a group of developers engaged in the development of MRHS equations and it
   
 - [*Structs*](CStructs.md)
 
+- [*LoadFIle*](LoadFIle.md)
+  - Functions to handle input file and transform it to MRHS form
 
 
 
