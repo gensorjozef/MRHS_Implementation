@@ -358,9 +358,9 @@ def _xor_cols_blocks_rhss(mrhs: MRHS) -> None:
         _update_mrhs_rhs(mrhs, i, rhs_i)
 
 
-def create_echelon_mrhs(mrhs: MRHS) -> None:
+def _convert_to_echelon_mrhs(mrhs: MRHS) -> None:
     """
-    Finall function that puts MRHS into an echelon form.
+    Function that puts MRHS into an echelon form.
     :param mrhs: instance of MRHS
     :return: None
     """
