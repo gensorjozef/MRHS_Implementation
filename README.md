@@ -18,6 +18,17 @@ We are a group of developers engaged in the development of MRHS equations and it
 - [*Structs*](CStructs.md)
 
 
+### Function collections
+
+---
+
+#### MRHS_Solver
+
+- [**EchelonMRHS**](EchelonMRHS.md)
+  - Collection of functions for creating echelon form of MRHS
+
+- [**SolveMRHS**](SolveMRHS.md)
+  - Collection of functions for solving MRHS
 
 
 
