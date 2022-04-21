@@ -17,29 +17,26 @@ def _append_vectors(vec1: list[int], vec2: list[int]) -> list[int]:
 
 def _generate_vectors(vec_len: int) -> list[list[int]]:
     """
-    Generates all posible vectors with length of vec_len. Returns these vectors.
+    Generates all posible vectors with length of vec_len.
     :param vec_len: length of vectors
     :return: vectors as a 2D list
     """
     vec_num = 2 ** vec_len
-    vectors = []
     for i in range(vec_num):
-        p_sol = [int(digit) for digit in bin(i)[2:]]
-        for j in range(vec_len - len(p_sol)):
-            p_sol.insert(0, 0)
-        vectors.append(p_sol)
-    return vectors
+        vec = [int(digit) for digit in bin(i)[2:]]
+        for j in range(vec_len - len(vec)):
+            vec.insert(0, 0)
+        yield vec
 
 
-def find_all_solutions_brute_force(mrhs: MRHS) -> list[list[int]]:
+def _find_all_solutions_brute_force(mrhs: MRHS) -> list[list[int]]:
     """
     Finds solutions to MRHS via brute forcing all possible vectors. Returns these solutions.
     :param mrhs: instance of MRHS
     :return: vectors as a 2D list
     """
-    test_vecs = _generate_vectors(mrhs.vector_size)
     all_solutions = []
-    for vec in test_vecs:
+    for vec in _generate_vectors(mrhs.vector_size):
         result_vec = []
         for block in mrhs.block_array:
             part_result = []
@@ -57,7 +54,8 @@ def find_all_solutions_brute_force(mrhs: MRHS) -> list[list[int]]:
             else:
                 break
 
-    # print(f'Solutions found by brute force: {all_solutions}')
+    if len(all_solutions) == 0:
+        print('There are no solutions.')
     return all_solutions
 
 
@@ -188,8 +186,8 @@ def _recursive_solution(part_sol: list[int], final_sol: list[int], block_num: in
     Firstly, function creates new possible partial solutions. If there no possible partial solutions, functions returns
     None. Otherwise, for each of these new partial solutions, function updates partial solution to this new value and
     calls itself with incremented block id. If the block number is at its maximum function checks if the final vector
-    has correct lenghts. If it doesnt, function adds 0 to that vector. Finally function updates final solution and
-    appends it to all solutions.
+    has correct lenghts. If it doesnt, function adds all possible elements to that vector. Finally function updates
+    final solution and adds it to all solutions.
     :param part_sol: vector as a list
     :param final_sol: vector as a list
     :param block_num: id of block in MRHS
@@ -203,11 +201,13 @@ def _recursive_solution(part_sol: list[int], final_sol: list[int], block_num: in
     else:
         for v in vectors:
             if block_num == len(mrhs.block_array) - 1:
-                final_sol = v
-                if len(final_sol) < mrhs.vector_size:
-                    for i in range(mrhs.vector_size - len(final_sol)):
-                        v.append(0)
-                all_sols.append(final_sol)
+                if len(v) < mrhs.vector_size:
+                    for v_e in _generate_vectors(mrhs.vector_size - len(v)):
+                        final_sol = _append_vectors(v, v_e)
+                        all_sols.append(final_sol)
+                else:
+                    final_sol = v
+                    all_sols.append(final_sol)
             else:
                 part_sol = v
                 final_sol = _recursive_solution(part_sol, final_sol, block_num + 1, mrhs, all_sols)
@@ -248,19 +248,23 @@ def _transform_solution(solution: list[int], mrhs: MRHS) -> list[int]:
     return transformed
 
 
-def find_all_solutions_recursively(echelon_mrhs: MRHS) -> list[list[int]]:
+def _find_all_solutions_recursively(echelon_mrhs: MRHS) -> Optional[list[list[int]]]:
     """
     Finds all solutions to echelonized MRHS using recursive function and transforms them using identity matrix from
     MRHS.
     :param echelon_mrhs: instance of echelonized MRHS
     :return: vectors as a 2D list
     """
-    original_sols = _find_solution_final(echelon_mrhs)
-    transformed_sols = []
-    for sol in original_sols:
-        transformed_sol = _transform_solution(sol, echelon_mrhs)
-        transformed_sols.append(transformed_sol)
-    return transformed_sols
+    echelon_sols = _find_solution_final(echelon_mrhs)
+    if len(echelon_sols) == 0:
+        print('There are no solutions.')
+        return []
+    else:
+        transformed_sols = []
+        for sol in echelon_sols:
+            transformed_sol = _transform_solution(sol, echelon_mrhs)
+            transformed_sols.append(transformed_sol)
+        return transformed_sols
 
 
 def _check_solution(solution: list[int], mrhs: MRHS) -> bool:
@@ -284,3 +288,5 @@ def _check_solution(solution: list[int], mrhs: MRHS) -> bool:
 
     print(f'Solution "{solution}" is valid.')
     return True
+
+
