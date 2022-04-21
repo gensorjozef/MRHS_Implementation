@@ -1,5 +1,43 @@
 from MRHS_Solver import MRHS
 
+def load_file_matrix(file_name : str) -> list[list[list[int]]] :
+    f = open(file_name,'r')
+    s = f.read().replace("[","").replace("]","").split()
+    f.close()
+    n = int(s[0])
+    m = int(s[1])
+    l = []
+    k = []
+    index = 2
+    for i in range(m):
+        l.append(int(s[index]))
+        index += 1
+        k.append(int(s[index]))
+        index += 1
+
+    mat = []
+
+    for i in range(m):
+        block_num = l[i]
+        rhs_num = k[i]
+        block = [[[0]*block_num for x in range(n)], [[0]*block_num for x in range(rhs_num)]]
+        mat.append(block)
+
+    for i in range(n):
+        for j in range(m):
+            nums = s[index]
+            index += 1
+            for h, number in enumerate(nums):
+                mat[j][0][i][h] = int(number)
+
+    for i in range(m):
+        for j in range(k[i]):
+            nums = s[index]
+            index += 1
+            for h, number in enumerate(nums):
+                mat[i][1][j][h] = int(number)
+
+    return mat
 
 def _load_mrhs_from_file(file_name: str) -> list[list[list[int]]]:
     file = open(file_name, 'r')
