@@ -249,14 +249,15 @@ def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     :return: None
     """
     rows = len(mat)
+    cols = len(mat[0])
     i = 0
     j = 0
     while True:
-        if i >= rows - 1:
+        if i >= rows - 1 or j >= cols - 1:
             break
         i_piv = _find_row_id_of_pivot(mat, j)
         if i_piv == -1:
-            i += 1
+            j += 1
             continue
         if not _is_pivot_row(i_piv, j, mat):
             j += 1
@@ -268,27 +269,27 @@ def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
         i += 1
 
 
-def _sub_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
-    """
-    Xors rows in mat and i_mat until there are only zeros above pivots in mat.
-    :param mat: matrix as a 2D list
-    :param i_mat: identity matrix as a 2D list
-    :return: None
-    """
-    rows = len(mat)
-    cols = len(mat[0])
-    i = 1
-    for j in range(1, cols):
-        if not _is_pivot_row(i, j, mat):
-            j += 1
-            continue
-        for k in range(i):
-            if mat[k][j] == 1:
-                mat[k] = _xor_rows(mat[i], mat[k])
-                i_mat[k] = _xor_rows(i_mat[i], i_mat[k])
-        i += 1
-        if i >= rows:
-            break
+# def _sub_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
+#     """
+#     Xors rows in mat and i_mat until there are only zeros above pivots in mat.
+#     :param mat: matrix as a 2D list
+#     :param i_mat: identity matrix as a 2D list
+#     :return: None
+#     """
+#     rows = len(mat)
+#     cols = len(mat[0])
+#     i = 1
+#     for j in range(1, cols):
+#         if not _is_pivot_row(i, j, mat):
+#             j += 1
+#             continue
+#         for k in range(i):
+#             if mat[k][j] == 1:
+#                 mat[k] = _xor_rows(mat[i], mat[k])
+#                 i_mat[k] = _xor_rows(i_mat[i], i_mat[k])
+#         i += 1
+#         if i >= rows:
+#             break
 
 
 def _row_elim(mat: list[list[int]], i_mat: list[list[int]]) -> None:
@@ -300,7 +301,7 @@ def _row_elim(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     """
     _create_pivots(mat, i_mat)
     _sort_rows(mat, i_mat)
-    _sub_rows(mat, i_mat)
+    # _sub_rows(mat, i_mat)
 
 
 def _swap_cols_blocks_rhss(mrhs: MRHS) -> None:
