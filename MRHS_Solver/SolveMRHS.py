@@ -17,18 +17,16 @@ def _append_vectors(vec1: list[int], vec2: list[int]) -> list[int]:
 
 def _generate_vectors(vec_len: int) -> list[list[int]]:
     """
-    Generates all posible vectors with length of vec_len. Returns these vectors.
+    Generates all posible vectors with length of vec_len.
     :param vec_len: length of vectors
     :return: vectors as a 2D list
     """
     vec_num = 2 ** vec_len
-    vectors = []
     for i in range(vec_num):
-        p_sol = [int(digit) for digit in bin(i)[2:]]
-        for j in range(vec_len - len(p_sol)):
-            p_sol.insert(0, 0)
-        vectors.append(p_sol)
-    return vectors
+        vec = [int(digit) for digit in bin(i)[2:]]
+        for j in range(vec_len - len(vec)):
+            vec.insert(0, 0)
+        yield vec
 
 
 def _find_all_solutions_brute_force(mrhs: MRHS) -> list[list[int]]:
@@ -37,9 +35,8 @@ def _find_all_solutions_brute_force(mrhs: MRHS) -> list[list[int]]:
     :param mrhs: instance of MRHS
     :return: vectors as a 2D list
     """
-    test_vecs = _generate_vectors(mrhs.vector_size)
     all_solutions = []
-    for vec in test_vecs:
+    for vec in _generate_vectors(mrhs.vector_size):
         result_vec = []
         for block in mrhs.block_array:
             part_result = []
@@ -205,8 +202,7 @@ def _recursive_solution(part_sol: list[int], final_sol: list[int], block_num: in
         for v in vectors:
             if block_num == len(mrhs.block_array) - 1:
                 if len(v) < mrhs.vector_size:
-                    v_ends = _generate_vectors(mrhs.vector_size - len(v))
-                    for v_e in v_ends:
+                    for v_e in _generate_vectors(mrhs.vector_size - len(v)):
                         final_sol = _append_vectors(v, v_e)
                         all_sols.append(final_sol)
                 else:
