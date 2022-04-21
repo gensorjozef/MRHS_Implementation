@@ -6,26 +6,11 @@ from MRHS_Solver.CTypes.CTypeMRHS import CTypeMRHS
 
 
 if __name__ == '__main__':
-    mat = lf.load_file("input.txt")
-
-    vectors = [
-        [
-            [[1, 0, 1], [1, 1, 1]],
-            [[0, 1, 1], [1, 0, 0]]
-        ],
-        [
-            [[1, 0], [1, 1]],
-            [[0, 0], [0, 1]]
-            ]
-    ]
-
-    mrhs = ms.MRHS(vectors)
-    #mrhs.fill_random()
-    #mrhs = ms.MRHS(mat)
+    mat = lf.load_file_scanf("test_mrhs.txt")
+    mrhs = ms.MRHS(mat)
     mrhs.print_mrhs()
-    create_echelon_mrhs(mrhs)
-    sols = find_all_solutions_recursively(mrhs)
-    print(sols)
+
+
 
 
 

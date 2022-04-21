@@ -1,35 +1,43 @@
 from scanf import scanf
 
-def load_file_scanf(file_name):
+def load_file_matrix(file_name):
     f = open(file_name,'r')
-    s = f.read()
+    s = f.read().replace("[","").replace("]","").split()
     f.close()
-    n = scanf("%i")
-    m = scanf("%i")
+    n = int(s[0])
+    m = int(s[1])
     l = []
     k = []
+    index = 2
     for i in range(m):
-        l.append(scanf("%i"))
-        k.append(scanf("%i"))
+        l.append(int(s[index]))
+        index += 1
+        k.append(int(s[index]))
+        index += 1
 
     mat = []
 
-    for i in range(n):
+    for i in range(m):
         block_num = l[i]
         rhs_num = k[i]
-        block = [[[0]*block_num for k in range(m)],[[[0]*block_num for k in range(rhs_num)]]]
+        block = [[[0]*block_num for x in range(n)], [[0]*block_num for x in range(rhs_num)]]
         mat.append(block)
 
-    for i in range(m):
-        for j in range(n):
-            nums = scanf("%s")
+    for i in range(n):
+        for j in range(m):
+            nums = s[index]
+            index += 1
             for h, number in enumerate(nums):
                 mat[j][0][i][h] = int(number)
 
-    #TODO Nacitat RHS
+    for i in range(m):
+        for j in range(k[i]):
+            nums = s[index]
+            index += 1
+            for h, number in enumerate(nums):
+                mat[i][1][j][h] = int(number)
 
-
-
+    return mat
 
 
 def load_file(file_name):
