@@ -1,7 +1,7 @@
 from MRHS_Solver import MRHS
 
 
-def _load_mrhs_from_file(file_name : str) -> list[list[list[int]]] :
+def _load_mrhs_from_file(file_name: str) -> list[list[list[list[int]]]] :
     """
     Load normalized matrix format for MRHS
     :param file_name: file name
