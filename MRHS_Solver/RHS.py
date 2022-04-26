@@ -1,4 +1,4 @@
-from MRHS_Solver.Utils import generate_random_vectors
+from MRHS_Solver.Utils import _generate_random_vectors
 import random
 
 
@@ -17,7 +17,7 @@ class RHS:
         """
         Fills random RHS
         """
-        vectors = generate_random_vectors(len(self.matrix[0]), len(self.matrix))
+        vectors = _generate_random_vectors(len(self.matrix[0]), len(self.matrix))
         random.shuffle(vectors)
         self.matrix = vectors
 

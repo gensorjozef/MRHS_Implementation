@@ -1,5 +1,5 @@
 from MRHS_Solver.RHS import *
-from MRHS_Solver.Utils import *
+from MRHS_Solver.Utils import _fill_2d_matrix_random
 
 
 class BlockMatrix:
@@ -19,7 +19,7 @@ class BlockMatrix:
         """
         Fills Block matrix with random
         """
-        fill_2d_matrix_random(self.matrix)
+        _fill_2d_matrix_random(self.matrix)
         self.rhsMatrix.fill_random()
 
     def print_row(self, row_id):

@@ -2,7 +2,7 @@ from MRHS_Solver.BlockMatrix import *
 from MRHS_Solver.EchelonMRHS import _convert_to_echelon_mrhs
 from MRHS_Solver.SolveMRHS import _find_all_solutions_recursively, _find_all_solutions_brute_force
 from MRHS_Solver.FileHandler import _convert_to_file, _load_mrhs_from_file
-from MRHS_Solver.Utils import initialise_2d_matrix
+from MRHS_Solver.Utils import _initialise_2d_matrix
 
 
 class MRHS:
@@ -35,8 +35,8 @@ class MRHS:
             self.vector_size = rows
             self.block_array = []
             for i in range(block_num):
-                block_matrix_i = initialise_2d_matrix(block_lens[i], rows)
-                rhs_matrix_i = initialise_2d_matrix(block_lens[i], rhs_lens[i])
+                block_matrix_i = _initialise_2d_matrix(block_lens[i], rows)
+                rhs_matrix_i = _initialise_2d_matrix(block_lens[i], rhs_lens[i])
                 block_i = BlockMatrix([block_matrix_i, rhs_matrix_i])
                 block_i.fill_random()
                 self.block_array.append(block_i)
