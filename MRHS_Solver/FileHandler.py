@@ -1,8 +1,13 @@
 from MRHS_Solver import MRHS
 
 def load_file_matrix(file_name : str) -> list[list[list[int]]] :
-    f = open(file_name,'r')
-    s = f.read().replace("[","").replace("]","").split()
+    """
+    Load normalized matrix format for MRHS
+    :param file_name: file name
+    :return: vectors
+    """
+    f = open(file_name, 'r')
+    s = f.read().replace("[", "").replace("]", "").split()
     f.close()
     n = int(s[0])
     m = int(s[1])
@@ -20,7 +25,7 @@ def load_file_matrix(file_name : str) -> list[list[list[int]]] :
     for i in range(m):
         block_num = l[i]
         rhs_num = k[i]
-        block = [[[0]*block_num for x in range(n)], [[0]*block_num for x in range(rhs_num)]]
+        block = [[[0] * block_num for x in range(n)], [[0] * block_num for x in range(rhs_num)]]
         mat.append(block)
 
     for i in range(n):
