@@ -1,7 +1,7 @@
 import random
 
 
-def fill_2d_matrix_random(mat):
+def _fill_2d_matrix_random(mat):
     """
     Fills matrix with random values
     :param mat: matrix
@@ -9,12 +9,12 @@ def fill_2d_matrix_random(mat):
     """
     for row in range(len(mat)):
         for col in range(len(mat[row])):
-            mat[row][col] = get_random_bit()
+            mat[row][col] = _get_random_bit()
 
     return mat
 
 
-def initialise_2d_matrix(dimX, dimY):
+def _initialise_2d_matrix(dimX, dimY):
     """
     Initialise 2D matrix
     :param dimX: dimension X
@@ -25,7 +25,7 @@ def initialise_2d_matrix(dimX, dimY):
     return m
 
 
-def bitfield(n):
+def _bitfield(n):
     """
     Converts number to list of bits
     :param n: number
@@ -34,7 +34,7 @@ def bitfield(n):
     return [int(digit) for digit in bin(n)[2:]]
 
 
-def get_random_bit():
+def _get_random_bit():
     """
     Gets random byte
     :return: random bit (0/1)
@@ -42,7 +42,7 @@ def get_random_bit():
     return random.randint(0, 1)
 
 
-def generate_random_vectors(vec_len: int, num_of_vecs: int) -> list[list[int]]:
+def _generate_random_vectors(vec_len: int, num_of_vecs: int) -> list[list[int]]:
     """
     Creates num_of_vecs random vectors with length of vec_len.
     :param num_of_vecs: number of vectors we want (must be lower than 2^vec_len)
