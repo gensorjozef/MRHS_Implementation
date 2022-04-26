@@ -1,40 +1,73 @@
 from MRHS_Solver.BlockMatrix import *
 from MRHS_Solver.EchelonMRHS import _convert_to_echelon_mrhs
 from MRHS_Solver.SolveMRHS import _find_all_solutions_recursively, _find_all_solutions_brute_force
-from MRHS_Solver.Utils import bitfield
-from MRHS_Solver.RHS import *
-import random
+from MRHS_Solver.FileHandler import _convert_to_file, _load_mrhs_from_file
+from MRHS_Solver.Utils import initialise_2d_matrix
 
 
 class MRHS:
     """
     Class for MRHS
     """
-
-    def __init__(self, vectors):
+    def __init__(self, vectors=None):
         """
         Initialize Matrix with 3D array
         :param vectors: Arrays of vectors for each block
         """
+        if vectors:
+            self.block_array = []
+            for vector in vectors:
+                bm = BlockMatrix(vector)
+                self.block_array.append(bm)
+            self.vector_size = len(vectors[0][0])
+            self.ident_matrix = self._create_indentity_mat()
+
+    def init_random(self, rows, block_num, block_lens, rhs_lens):
+        """
+        Checks if parameters are valid. If yes, it initializes a random MRHS.
+        :param rows: integer
+        :param block_num: integer
+        :param block_lens: list of integers
+        :param rhs_lens: list of integers
+        :return: None
+        """
+        if _check_parameters(block_num, block_lens, rhs_lens):
+            self.vector_size = rows
+            self.block_array = []
+            for i in range(block_num):
+                block_matrix_i = initialise_2d_matrix(block_lens[i], rows)
+                rhs_matrix_i = initialise_2d_matrix(block_lens[i], rhs_lens[i])
+                block_i = BlockMatrix([block_matrix_i, rhs_matrix_i])
+                block_i.fill_random()
+                self.block_array.append(block_i)
+            self.ident_matrix = self._create_indentity_mat()
+
+    def init_with_vectors(self, vectors):
+        """
+        Initializes a MRHS from vectors.
+        :param vectors: 3D list
+        :return: None
+        """
         self.block_array = []
         for vector in vectors:
-            bm = BlockMatrix()
-            bm._init_with_matrix(vector)
+            bm = BlockMatrix(vector)
             self.block_array.append(bm)
         self.vector_size = len(vectors[0][0])
         self.ident_matrix = self._create_indentity_mat()
 
-    def _fill_random(self):
+    def init_with_file(self, file_name):
         """
-        Fills matrix with random values
+        Initializes a MRHS from a file.
+        :param file_name: name of the file
+        :return: None
         """
-        for bm in self.block_array:
-            bm.fill_random()
+        vectors = _load_mrhs_from_file(file_name)
+        self.init_with_vectors(vectors)
 
     def _create_indentity_mat(self):
         """
-        Creates identity matrix
-        :return: identity matrix (2D array)
+        Initializes identity matrix in MRHS.
+        :return: None
         """
         i_mat = []
         for i in range(self.vector_size):
@@ -57,11 +90,11 @@ class MRHS:
                 block.print_row(row)
                 print(' ', end='')
             print()
-        print("-" * 30)
+        mrhs_len = sum([len(i.matrix[0]) + 1 for i in self.block_array]) - 1
+        print("-" * mrhs_len)
         printing = True
         rhs_id = 0
         while printing:
-
             printing = False
             for block in self.block_array:
                 if block.try_print_rhs(rhs_id):
@@ -92,3 +125,67 @@ class MRHS:
         :return: None
         """
         _convert_to_echelon_mrhs(self)
+
+    def convert_to_file(self, file_name):
+        """
+        Writes MRHS into a file.
+        :param file_name: name of the file
+        :return: None
+        """
+        _convert_to_file(self, file_name)
+
+
+def _check_parameters(block_num, block_lens, rhs_lens):
+    """
+    Checks in parameters for creating MRHS are valid.
+    :param block_num: integer
+    :param block_lens: list of integers
+    :param rhs_lens: list of integers
+    :return: boolean
+    """
+    checker = True
+    if len(block_lens) != block_num:
+        print(f'The number of blocks -> {block_num} is not equal to number of block lengths -> {len(block_lens)}.')
+        checker = False
+    if len(rhs_lens) != block_num:
+        print(f'The number of blocks -> {block_num} is not equal to number of RHS numbers -> {len(rhs_lens)}.')
+        checker = False
+    for i, rhs in enumerate(rhs_lens):
+        max_rhs_num = 2 ** block_lens[i]
+        curr_rhs_len = rhs
+        if curr_rhs_len > max_rhs_num:
+            print(f'RHS number -> {curr_rhs_len} on position -> {i} is greater than the maximum possible number of RHS '
+                  f'-> {max_rhs_num}')
+            checker = False
+    return checker
+
+
+# class WrongNumberOfBlocksError(Exception):
+#     def __init__(self, block_num, block_lens_len):
+#         self.block_num = block_num
+#         self.block_lens_len = block_lens_len
+#         self.message = 'number of blocks is not equal to length of block lengths'
+#
+#     def __str__(self):
+#         return f'{self.block_num} != {self.block_lens_len} -> {self.message}'
+#
+#
+# class WrongNumberOfRHSError(Exception):
+#     def __init__(self, block_num, rhs_lens_len):
+#         self.block_num = block_num
+#         self.rhs_lens_len = rhs_lens_len
+#         self.message = 'number of blocks is not equal to length of RHS lengths'
+#
+#     def __str__(self):
+#         return f'{self.block_num} != {self.rhs_lens_len} -> {self.message}'
+#
+#
+# class NumberOfRHSTooHighError(Exception):
+#     def __init__(self, max_rhs_num, curr_rhs_num, index):
+#         self.max_rhs_num = max_rhs_num
+#         self.curr_rhs_num = curr_rhs_num
+#         self.index = index
+#         self.message = 'number of RHS is too high'
+#
+#     def __str__(self):
+#         return f'{self.curr_rhs_num} > {self.max_rhs_num} -> {self.message} on index: {self.index}'

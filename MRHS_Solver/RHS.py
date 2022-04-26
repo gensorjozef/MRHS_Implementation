@@ -1,57 +1,25 @@
-from MRHS_Solver.Utils import *
+from MRHS_Solver.Utils import generate_random_vectors
+import random
+
 
 class RHS:
     """
-    Class for RHS of BLockMatrices
+    Class for RHS of BlockMatrix
     """
-    def __int__(self,vectors):
+
+    def __init__(self, vectors):
         """
         Initialzie RHS with vectors
         """
-        self.matrix = vectors
-
-    def init_with_vectors(self, vectors):
         self.matrix = vectors
 
     def fill_random(self):
         """
         Fills random RHS
         """
-        fill_2d_matrix_random(self.matrix)
-
-    def contains_duplicate(self, vec):
-        count = 0
-
-        for row in self.matrix:
-            cont = True
-            for col in range(len(row)):
-                if row[col] != vec[col]:
-                    cont = False
-            if cont:
-                count += 1
-        if count > 1:
-            return True
-        return False
-
-    def remove_first_duplicate(self, vec):
-        for row in self.matrix:
-            cont = True
-            for col in range(len(row)):
-                if row[col] != vec[col]:
-                    cont = False
-            if cont:
-                self.matrix.remove(row)
-                return
-
-    def contains(self, vec):
-        for row in self.matrix:
-            cont = True
-            for col in range(len(row)):
-                if row[col] != vec[col]:
-                    cont = False
-            if cont:
-                return True
-        return False
+        vectors = generate_random_vectors(len(self.matrix[0]), len(self.matrix))
+        random.shuffle(vectors)
+        self.matrix = vectors
 
     def print_row(self, row_id):
         """
@@ -60,4 +28,3 @@ class RHS:
         """
         for row_byte in self.matrix[row_id]:
             print(row_byte, end='')
-
