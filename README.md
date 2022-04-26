@@ -14,12 +14,10 @@ We are a group of developers engaged in the development of MRHS equations and it
 #### MRHS_Solver
 - [**MRHS**](MRHS.md)
   - Class MRHS
-
-- [**CreateFile**](CreateFile.md)
-  - Collection of functions for writing MRHS into a text file
-
-- [**LoadFIle**](LoadFIle.md)
-  - Functions to handle input file and transform it to MRHS form
+- [**RHS**](RHS.md)
+  - Class for RHS of BlockMatrix
+- [**BlockMatrix**](BlockMatrix.md)
+  - Class for block in MRHS
 
 ---
 
