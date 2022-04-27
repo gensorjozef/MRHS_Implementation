@@ -54,8 +54,6 @@ def _find_all_solutions_brute_force(mrhs: MRHS) -> list[list[int]]:
             else:
                 break
 
-    if len(all_solutions) == 0:
-        print('There are no solutions.')
     return all_solutions
 
 
