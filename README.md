@@ -34,33 +34,43 @@ We are a group of developers engaged in the development of MRHS equations and it
 
 #### Examples
 
-##### Load MRHS from file
-
+##### Create MRHS from file
 ```python
-from MRHS_Solver import LoadFile as lf
 from MRHS_Solver import MRHS as ms
-
-mat = lf.load_file("input.txt")
-mrhs = ms.MRHS(mat)
+mrhs = ms.MRHS()
+mrhs.init_with_file("input.txt")
 mrhs.print_mrhs()
 ```
 
-##### Create MRHS and fill it with random
-
+##### Create MRHS with vectors
 ```python
 from MRHS_Solver import MRHS as ms
 vectors = [
         [
-            [[1, 0, 1], [1, 1, 1]],
-            [[0, 1, 1], [1, 0, 0]]
+            [[1, 0, 1], [1, 1, 1]], #BLOCK
+            [[0, 1, 1], [1, 0, 0]]  #RHS
         ],
         [
-            [[1, 0], [1, 1]],
-            [[0, 0], [0, 1]]
+            [[1, 0], [1, 1]], #BLOCK
+            [[0, 0], [0, 1]]  #RHS
         ]
     ]
 mrhs = ms.MRHS(vectors)
-mrhs.fill_random()
+mrhs.print_mrhs()
+
+# or:
+
+mrhs = ms.MRHS()
+mrhs.init_with_vectors(vectors)
+mrhs.print_mrhs()
+```
+
+##### Create MRHS and fill it with random
+```python
+from MRHS_Solver import MRHS as ms
+mrhs = ms.MRHS()
+mrhs.init_random(10, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
+mrhs.print_mrhs()
 ```
 
 ##### Create Ctype MRHS and fill it with random
@@ -72,30 +82,27 @@ cmrhs.create_mrhs_fixed(12, 6, 3, 4)
 cmrhs.fill_mrhs_random()
 mrhs = cmrhs.get_py_mrhs()
 ```
-##### Solve MRHS using python with echelon reduction
 
+##### Solve MRHS recursively using python with echelon reduction
 ```python
 from MRHS_Solver import MRHS as ms
-from MRHS_Solver.SolveMRHS import find_all_solutions_recursively
-from MRHS_Solver.EchelonMRHS import create_echelon_mrhs
+mrhs = ms.MRHS()
+mrhs.init_random(10, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
+mrhs.convert_to_echelon()
+solutions = mrhs.solve_recursive()
+print(solutions)
+```
 
-vectors = [
-        [
-            [[1, 0, 1], [1, 1, 1]], #Block
-            [[0, 1, 1], [1, 0, 0]]  #RHS
-        ],
-        [
-            [[1, 0], [1, 1]], #BLOCK
-            [[0, 0], [0, 1]]  #RHS
-        ]
-    ]
-mrhs = ms.MRHS(vectors)
-create_echelon_mrhs(mrhs)
-sols = find_all_solutions_recursively(mrhs)
+##### Solve MRHS with brute force
+```python
+from MRHS_Solver import MRHS as ms
+mrhs = ms.MRHS()
+mrhs.init_random(8, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
+solutions = mrhs.solve_brute_force()
+print(solutions)
 ```
 
 ##### Generate MRHS and solve using C version
-
 ```python
 from MRHS_Solver.CTypes.CTypeMRHS import CTypeMRHS
 
@@ -108,6 +115,14 @@ cmrhs.fill_mrhs_random()
 report = cmrhs.solve(10_000, algorithm="rz", save_file="results.txt", report_solutions=0)
 #Prints solving results
 report.print_results()
+```
+
+##### Write MRHS to a file
+```python
+from MRHS_Solver import MRHS as ms
+mrhs = ms.MRHS()
+mrhs.init_random(10, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
+mrhs.convert_to_file("output.txt")
 ```
 
         
