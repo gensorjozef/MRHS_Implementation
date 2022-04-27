@@ -84,21 +84,24 @@ mrhs = cmrhs.get_py_mrhs()
 ```
 
 ##### Solve MRHS recursively using python with echelon reduction
+
 ```python
 from MRHS_Solver import MRHS as ms
+
 mrhs = ms.MRHS()
 mrhs.init_random(10, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
-mrhs.convert_to_echelon()
-solutions = mrhs.solve_recursive()
+solutions = mrhs.solve(method='r')
 print(solutions)
 ```
 
 ##### Solve MRHS with brute force
+
 ```python
 from MRHS_Solver import MRHS as ms
+
 mrhs = ms.MRHS()
 mrhs.init_random(8, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
-solutions = mrhs.solve_brute_force()
+solutions = mrhs.solve(method='bf')
 print(solutions)
 ```
 
@@ -116,6 +119,16 @@ report = cmrhs.solve(10_000, algorithm="rz", save_file="results.txt", report_sol
 #Prints solving results
 report.print_results()
 ```
+
+#### Convert MRHS to echelon form
+```python
+from MRHS_Solver import MRHS as ms
+mrhs = ms.MRHS()
+mrhs.init_random(10, 5, [3, 3, 3, 3, 3], [4, 4, 4, 4, 4])
+mrhs.convert_to_echelon()
+mrhs.print_mrhs()
+```
+
 
 ##### Write MRHS to a file
 ```python
