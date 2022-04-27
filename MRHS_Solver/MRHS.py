@@ -22,6 +22,9 @@ class MRHS:
             self.vector_size = len(vectors[0][0])
             self.ident_matrix = self._create_indentity_mat()
 
+        self.methods = {'r': self._solve_recursive,
+                        'bf': self._solve_brute_force}
+
     def init_random(self, rows, block_num, block_lens, rhs_lens):
         """
         Checks if parameters are valid. If yes, it initializes a random MRHS.
@@ -105,19 +108,28 @@ class MRHS:
             print()
             rhs_id += 1
 
-    def solve_recursive(self):
+    def _solve_recursive(self):
         """
-        Returns all solutions using a recursive function.
+        Converts MRHS to echelon form and returns all solutions using a recursive function.
         :return: all solutions as a 2D list
         """
+        _convert_to_echelon_mrhs(self)
         return _find_all_solutions_recursively(self)
 
-    def solve_brute_force(self):
+    def _solve_brute_force(self):
         """
         Returns all solutions using brute force.
         :return: all solutions as a 2D list
         """
         return _find_all_solutions_brute_force(self)
+
+    def solve(self, method='r'):
+        """
+        Solves MRHS based on method selected.
+        :param method: solving method
+        :return: all solutions as a 2D list
+        """
+        return self.methods[method]()
 
     def convert_to_echelon(self):
         """
@@ -158,34 +170,3 @@ def _check_parameters(block_num, block_lens, rhs_lens):
                   f'-> {max_rhs_num}')
             checker = False
     return checker
-
-
-# class WrongNumberOfBlocksError(Exception):
-#     def __init__(self, block_num, block_lens_len):
-#         self.block_num = block_num
-#         self.block_lens_len = block_lens_len
-#         self.message = 'number of blocks is not equal to length of block lengths'
-#
-#     def __str__(self):
-#         return f'{self.block_num} != {self.block_lens_len} -> {self.message}'
-#
-#
-# class WrongNumberOfRHSError(Exception):
-#     def __init__(self, block_num, rhs_lens_len):
-#         self.block_num = block_num
-#         self.rhs_lens_len = rhs_lens_len
-#         self.message = 'number of blocks is not equal to length of RHS lengths'
-#
-#     def __str__(self):
-#         return f'{self.block_num} != {self.rhs_lens_len} -> {self.message}'
-#
-#
-# class NumberOfRHSTooHighError(Exception):
-#     def __init__(self, max_rhs_num, curr_rhs_num, index):
-#         self.max_rhs_num = max_rhs_num
-#         self.curr_rhs_num = curr_rhs_num
-#         self.index = index
-#         self.message = 'number of RHS is too high'
-#
-#     def __str__(self):
-#         return f'{self.curr_rhs_num} > {self.max_rhs_num} -> {self.message} on index: {self.index}'
