@@ -241,6 +241,34 @@ def _create_pivots(mat: list[list[int]], i_mat: list[list[int]]) -> None:
                 break
 
 
+# def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
+#     """
+#     Swaps rows in mat and i_mat until pivots in mat are sorted in a descending order.
+#     :param mat: matrix as a 2D list
+#     :param i_mat: identity matrix as a 2D list
+#     :return: None
+#     """
+#     rows = len(mat)
+#     cols = len(mat[0])
+#     i = 0
+#     j = 0
+#     while True:
+#         if i >= rows - 1 or j >= cols - 1:
+#             break
+#         i_piv = _find_row_id_of_pivot(mat, j)
+#         if i_piv == -1:
+#             j += 1
+#             continue
+#         if not _is_pivot_row(i_piv, j, mat):
+#             j += 1
+#             continue
+#         if i != i_piv:
+#             _swap_rows(i, i_piv, mat)
+#             _swap_rows(i, i_piv, i_mat)
+#         j += 1
+#         i += 1
+
+
 def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     """
     Swaps rows in mat and i_mat until pivots in mat are sorted in a descending order.
@@ -248,24 +276,15 @@ def _sort_rows(mat: list[list[int]], i_mat: list[list[int]]) -> None:
     :param i_mat: identity matrix as a 2D list
     :return: None
     """
-    rows = len(mat)
     cols = len(mat[0])
     i = 0
-    j = 0
-    while True:
-        if i >= rows - 1 or j >= cols - 1:
-            break
+    for j in range(cols):
         i_piv = _find_row_id_of_pivot(mat, j)
-        if i_piv == -1:
-            j += 1
-            continue
-        if not _is_pivot_row(i_piv, j, mat):
-            j += 1
+        if i_piv == -1 or not _is_pivot_row(i_piv, j, mat):
             continue
         if i != i_piv:
             _swap_rows(i, i_piv, mat)
             _swap_rows(i, i_piv, i_mat)
-        j += 1
         i += 1
 
 
