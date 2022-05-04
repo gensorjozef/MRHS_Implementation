@@ -8,8 +8,7 @@
 - [```init_with_vectors(self, list[list[int]]: vectors)```](#initializes-mrhs-from-vectors) 
 - [```init_random(self, int: rows, int: block_num, list[int]: block_lens, list[int]: rhs_lens)```](#initializes-a-random-mrhs)
 - [```init_with_file(self, string: file_name)```](#initializes-mrhs-from-a-file)
-- [```solve_brute_force(self)```](#solve-with-brute-force)
-- [```solve_recursive(self)```](#solve-recursively)
+- [```solve(self, method='r','bf')```](#solve)
 - [```convert_to_echelon(self)```](#convert-to-echelon-form)
 - [```convert_to_file(self, string: file_name)```](#convert-to-file)
 
@@ -41,20 +40,13 @@
 
 ---
 
-### Solve with brute force
- ```solve_brute_force(self)```
+### Solve
+ ```solve(self, method='r','bf')```
 - Description
-  - Function that finds solutions to MRHS via brute forcing all possible vectors.
-- Return:
-  - ***list[list[int]]***: list of solutions to MRHS
-
----
-
-### Solve recursively
- ```solve_recursive(self)```
- - Description
-  - Function that finds all solutions to echelonized MRHS using recursive function and transforms them using identity 
-  - matrix from MRHS.
+  - Solves MRHS based on method selected.
+- Parameters:
+  - 'r' -> Finds all solutions to echelonized MRHS using recursive function and transforms them using identity matrix from MRHS.
+  - 'bf' -> Finds solutions to MRHS via brute forcing all possible vectors.
 - Return:
   - ***list[list[int]]***: list of solutions to MRHS
 
